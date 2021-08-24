@@ -14,8 +14,8 @@ data:
   points_unpackbits: true
   model_file: model.off
   watertight_file: model_watertight.off
-  img_folder: img
-  img_size: 224 
+  img_folder: img_choy2016
+  img_size: 224
   img_with_camera: false
   img_augment: false
   n_views: 24
@@ -40,7 +40,7 @@ model:
   dmc_weight_prior: 10.
 training:
   out_dir:  out/default
-  batch_size: 64
+  batch_size: 10
   print_every: 10
   visualize_every: 2000
   checkpoint_every: 1000

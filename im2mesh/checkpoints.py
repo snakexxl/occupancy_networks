@@ -60,7 +60,7 @@ class CheckpointIO(object):
 
         if os.path.exists(filename):
             print(filename)
-            print('=> Loading checkpoint from local file...')
+            print(f'=> Loading checkpoint from local file {filename}')
             state_dict = torch.load(filename)
             scalars = self.parse_state_dict(state_dict)
             return scalars

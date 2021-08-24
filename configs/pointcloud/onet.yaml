@@ -15,7 +15,7 @@ model:
   z_dim: 0
 training:
   out_dir:  out/pointcloud/onet
-  batch_size: 64
+  batch_size: 4
   model_selection_metric: iou
   model_selection_mode: maximize
 test:
@@ -23,7 +23,7 @@ test:
   eval_mesh: true
   eval_pointcloud: false
 generation:
-  batch_size: 100000
+  batch_size: 4
   refine: false
   n_x: 128
   n_z: 1

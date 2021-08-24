@@ -110,8 +110,11 @@ class Shapes3dDataset(data.Dataset):
         data = {}
 
         for field_name, field in self.fields.items():
+            field_data = field.load(model_path, idx, c_idx)
+
             try:
-                field_data = field.load(model_path, idx, c_idx)
+                pass
+
             except Exception:
                 if self.no_except:
                     logger.warn(
