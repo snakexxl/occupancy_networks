@@ -3302,7 +3302,7 @@ static int __pyx_pf_8cyfusion_8PyVolume___init__(struct __pyx_obj_8cyfusion_PyVo
     __Pyx_RaiseBufferIndexError(__pyx_t_5);
     __PYX_ERR(1, 88, __pyx_L1_error)
   }
-  __pyx_v_self->vol.data_ = (&(*((float *) ( /* dim=3 */ ((char *) (((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_data.data + __pyx_t_1 * __pyx_v_data.strides[0]) ) + __pyx_t_2 * __pyx_v_data.strides[1]) ) + __pyx_t_3 * __pyx_v_data.strides[2]) )) + __pyx_t_4)) ))));
+  __pyx_v_self->vol.data_ = (&(*((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_data.data + __pyx_t_1 * __pyx_v_data.strides[0]) ) + __pyx_t_2 * __pyx_v_data.strides[1]) ) + __pyx_t_3 * __pyx_v_data.strides[2]) )) + __pyx_t_4)) ))));
 
   /* "cyfusion.pyx":89
  *     self.vol = Volume()

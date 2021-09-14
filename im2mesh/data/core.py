@@ -110,6 +110,7 @@ class Shapes3dDataset(data.Dataset):
         data = {}
 
         for field_name, field in self.fields.items():
+            "field data hat die 3dimensinalen Punkt"
             field_data = field.load(model_path, idx, c_idx)
 
             try:

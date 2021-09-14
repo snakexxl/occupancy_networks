@@ -11,7 +11,7 @@ class VoxelEncoder(nn.Module):
         c_dim (int): output dimension
     '''
 
-    def __init__(self, dim=3, c_dim=128):
+    def __init__(self, dim=2, c_dim=128):
         super().__init__()
         self.actvn = F.relu
 
@@ -49,7 +49,7 @@ class CoordVoxelEncoder(nn.Module):
         c_dim (int): output dimension
     '''
 
-    def __init__(self, dim=3, c_dim=128):
+    def __init__(self, dim=2, c_dim=128):
         super().__init__()
         self.actvn = F.relu
 

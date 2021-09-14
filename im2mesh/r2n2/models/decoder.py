@@ -12,7 +12,7 @@ class Decoder(nn.Module):
         c_dim (int): dimension of latent conditioned code c
     '''
 
-    def __init__(self, dim=3, c_dim=128):
+    def __init__(self, dim=2, c_dim=128):
         super().__init__()
         self.actvn = F.relu
         self.fc_in = nn.Linear(c_dim, 256*4*4*4)

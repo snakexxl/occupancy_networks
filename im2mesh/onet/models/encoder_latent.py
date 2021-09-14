@@ -21,7 +21,7 @@ class Encoder(nn.Module):
         dim (int): input dimension
         leaky (bool): whether to use leaky ReLUs
     '''
-    def __init__(self, z_dim=128, c_dim=128, dim=3, leaky=False):
+    def __init__(self, z_dim=128, c_dim=128, dim=2, leaky=False):
         super().__init__()
         self.z_dim = z_dim
         self.c_dim = c_dim

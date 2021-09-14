@@ -10,6 +10,7 @@ from im2mesh.utils import binvox_rw
 
 class IndexField(Field):
     ''' Basic index field.'''
+
     def load(self, model_path, idx, category):
         ''' Loads the index field.
 
@@ -31,6 +32,7 @@ class IndexField(Field):
 
 class CategoryField(Field):
     ''' Basic category field.'''
+
     def load(self, model_path, idx, category):
         ''' Loads the category field.
 
@@ -62,6 +64,7 @@ class ImagesField(Field):
         random_view (bool): whether a random view should be used
         with_camera (bool): whether camera data should be provided
     '''
+
     def __init__(self, folder_name, transform=None,
                  extension='jpg', random_view=True, with_camera=False):
         self.folder_name = folder_name
@@ -81,9 +84,9 @@ class ImagesField(Field):
         folder = os.path.join(model_path, self.folder_name)
         files = glob.glob(os.path.join(folder, '*.%s' % self.extension))
         files.sort()
-        
+
         if self.random_view:
-            idx_img = random.randint(0, len(files)-1)
+            idx_img = random.randint(0, len(files) - 1)
         else:
             idx_img = 0
         filename = files[idx_img]
@@ -132,6 +135,7 @@ class PointsField(Field):
             provided
 
     '''
+
     def __init__(self, file_name, transform=None, with_transforms=False, unpackbits=False):
         self.file_name = file_name
         self.transform = transform
@@ -149,6 +153,7 @@ class PointsField(Field):
         file_path = os.path.join(model_path, self.file_name)
 
         points_dict = np.load(file_path)
+        "Ich glaube hier muss ich die points verändern"
         points = points_dict['points']
         # Break symmetry if given in float16:
         if points.dtype == np.float16:
@@ -162,7 +167,7 @@ class PointsField(Field):
             occupancies = np.unpackbits(occupancies)[:points.shape[0]]
         occupancies = occupancies.astype(np.float32)
 
-        data = {
+        data = {  # data kann ich auch verändern
             None: points,
             'occ': occupancies,
         }
@@ -186,6 +191,7 @@ class VoxelsField(Field):
         file_name (str): file name
         transform (list): list of transformations applied to data points
     '''
+
     def __init__(self, file_name, transform=None):
         self.file_name = file_name
         self.transform = transform
@@ -231,6 +237,7 @@ class PointCloudField(Field):
         with_transforms (bool): whether scaling and rotation dat should be
             provided
     '''
+
     def __init__(self, file_name, transform=None, with_transforms=False):
         self.file_name = file_name
         self.transform = transform
@@ -288,6 +295,7 @@ class MeshField(Field):
         file_name (str): file name
         transform (list): list of transforms applied to data points
     '''
+
     def __init__(self, file_name, transform=None):
         self.file_name = file_name
         self.transform = transform

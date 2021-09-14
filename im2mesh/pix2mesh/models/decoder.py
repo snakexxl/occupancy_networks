@@ -21,7 +21,7 @@ class Decoder(nn.Module):
     """
 
     def __init__(self, ellipsoid, device=None, hidden_dim=192,
-                 feat_dim=1280, coor_dim=3, adjust_ellipsoid=False):
+                 feat_dim=1280, coor_dim=2, adjust_ellipsoid=False):
         super(Decoder, self).__init__()
         # Save necessary helper matrices in respective variables
         self.initial_coordinates = torch.tensor(ellipsoid[0]).to(device)

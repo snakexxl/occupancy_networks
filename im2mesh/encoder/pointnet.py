@@ -17,7 +17,7 @@ class SimplePointnet(nn.Module):
         hidden_dim (int): hidden dimension of the network
     '''
 
-    def __init__(self, c_dim=128, dim=3, hidden_dim=128):
+    def __init__(self, c_dim=128, dim=2, hidden_dim=128):
         super().__init__()
         self.c_dim = c_dim
 
@@ -67,7 +67,7 @@ class ResnetPointnet(nn.Module):
         hidden_dim (int): hidden dimension of the network
     '''
 
-    def __init__(self, c_dim=128, dim=3, hidden_dim=128):
+    def __init__(self, c_dim=128, dim=2, hidden_dim=128):
         super().__init__()
         self.c_dim = c_dim
 
@@ -83,7 +83,7 @@ class ResnetPointnet(nn.Module):
         self.pool = maxpool
 
     def forward(self, p):
-        batch_size, T, D = p.size()
+        batch_size, T, D = p.size() # must be batch_size,number_random_points(2048), Dimension =2
 
         # output size: B x T X F
         net = self.fc_pos(p)

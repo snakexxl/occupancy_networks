@@ -5,7 +5,7 @@ from im2mesh.layers import ResnetBlockFC, AffineLayer
 
 
 class VoxelDecoder(nn.Module):
-    def __init__(self, dim=3, z_dim=128, c_dim=128, hidden_size=128):
+    def __init__(self, dim=2, z_dim=128, c_dim=128, hidden_size=128):
         super().__init__()
         self.c_dim = c_dim
         self.z_dim = z_dim
@@ -71,7 +71,7 @@ class VoxelDecoder(nn.Module):
 
 
 class FeatureDecoder(nn.Module):
-    def __init__(self, dim=3, z_dim=128, c_dim=128, hidden_size=256):
+    def __init__(self, dim=2, z_dim=128, c_dim=128, hidden_size=256):
         super().__init__()
         self.z_dim = z_dim
         self.c_dim = c_dim
