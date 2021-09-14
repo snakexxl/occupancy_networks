@@ -3,7 +3,7 @@ from torchvision import transforms
 from im2mesh import data
 from im2mesh import onet, r2n2, psgn, pix2mesh, dmc
 from im2mesh import preprocess
-
+from im2mesh.data.dataset_sequence import DatasetSilhouetteKeypoints
 
 method_dict = {
     'onet': onet,
@@ -167,6 +167,10 @@ def get_dataset(mode, cfg, return_idx=False, return_category=False):
         dataset = data.ImageDataset(
             dataset_folder, img_size=cfg['data']['img_size'],
             return_idx=return_idx,
+        )
+    elif dataset_type == 'silhouette':
+        dataset = DatasetSilhouetteKeypoints(
+
         )
     else:
         raise ValueError('Invalid dataset "%s"' % cfg['data']['dataset'])

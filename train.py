@@ -48,13 +48,16 @@ if not os.path.exists(out_dir):
     os.makedirs(out_dir)
 
 # Dataset
+cfg['data']['dataset']='silhouette'
 train_dataset = config.get_dataset('train', cfg)
+a = train_dataset[0]
 val_dataset = config.get_dataset('val', cfg)
 
 train_loader = torch.utils.data.DataLoader(
     train_dataset, batch_size=batch_size, num_workers=4, shuffle=True,
     collate_fn=data.collate_remove_none,
     worker_init_fn=data.worker_init_fn)
+b = next(iter(train_loader))
 
 val_loader = torch.utils.data.DataLoader(
     val_dataset, batch_size=4, num_workers=4, shuffle=False,
@@ -80,7 +83,8 @@ trainer = config.get_trainer(model, optimizer, cfg, device=device)
 
 checkpoint_io = CheckpointIO(out_dir, model=model, optimizer=optimizer)
 try:
-    load_dict = checkpoint_io.load('model.pt')
+    raise FileExistsError
+    #load_dict = checkpoint_io.load('model.pt')
 except FileExistsError:
     load_dict = dict()
 epoch_it = load_dict.get('epoch_it', -1)
