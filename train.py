@@ -59,11 +59,13 @@ train_loader = torch.utils.data.DataLoader(
     worker_init_fn=data.worker_init_fn)
 b = next(iter(train_loader))
 
+cfg['data']['dataset']='val2D'
+val_dataset = config.get_dataset('val', cfg)
 val_loader = torch.utils.data.DataLoader(
-    val_dataset, batch_size=4, num_workers=4, shuffle=False,
+    val_dataset, batch_size=4, num_workers=0, shuffle=False,
     collate_fn=data.collate_remove_none,
     worker_init_fn=data.worker_init_fn)
-
+c = next(iter(val_loader))
 
 # For visualizations
 vis_loader = torch.utils.data.DataLoader(
@@ -134,7 +136,7 @@ while True:
                   % (epoch_it, it, loss))
 
         # Visualize output
-        if visualize_every > 0 and (it % visualize_every) == 0:
+        if False and visualize_every > 0 and (it % visualize_every) == 0:
             print('Visualizing')
             trainer.visualize(data_vis)
 

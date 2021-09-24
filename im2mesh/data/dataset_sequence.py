@@ -49,23 +49,36 @@ def silhouette_gt_from_image(frame_index:int):
 
 
 class DatasetSilhouetteKeypoints:
-    def __init__(self):
+    def __init__(self,validation:bool):
+        self.validation = validation
         self.keypoints = importKeypointsFromCdf()
+        print(validation)
+
     #todo #load keypoints from cdf files
     # load groundtruth Silhouette from images
     # is_in_silhoutte needs to be defined depended on the ground truth
 
     def __getitem__(self, index)->Dict[str,np.ndarray]:
         silhouette_gt = silhouette_gt_from_image(index)
-        random_points = generateRandomPoints(999,silhouette_gt)
+        random_points = generateRandomPoints(2048,silhouette_gt)
+        random_points_iou = generateRandomPoints(100000,silhouette_gt)
         is_in_silhoutte = silhouette_to_prediction_function(silhouette_gt)
         points_occ = np.stack([is_in_silhoutte(point)for point in random_points])
+        points_iou_occ = np.stack([is_in_silhoutte(point)for point in random_points_iou])
         item= {
-            'points': random_points,  #shape 2048,2 im gesamten raum random generierte punkte
-            'points.occ': points_occ,  # datatyp:bool,shape:2048, ob der generierte Punkt innerhalb der Silhoutte ist für jeden der 2048 generierten Punkte
+            'points': random_points,  #shape 999,2 im gesamten raum random generierte punkte
+            'points.occ': points_occ,  # datatyp:bool,shape:999, ob der generierte Punkt innerhalb der Silhoutte ist für jeden der 2048 generierten Punkte
             'inputs': self.keypoints[index], #keypoints of the person
             #'inputs.normals': dontknow[dk]
         }
+        if self.validation:
+            #print('enter validation')
+            item['voxels'] = silhouette_gt
+            item['points_iou'] = random_points_iou
+            item['points_iou.occ'] = points_iou_occ
+        else:
+            #print('did not enter')
+            pass
         return item
 
     def __len__(self):
