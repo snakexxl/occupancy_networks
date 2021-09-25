@@ -60,7 +60,7 @@ evaluator = MeshEvaluator(n_points=100000)
 
 # Loader
 test_loader = torch.utils.data.DataLoader(
-    dataset, batch_size=1, num_workers=0, shuffle=False)
+    dataset, batch_size=1, num_workers=4, shuffle=False)
 
 # Evaluate all classes
 eval_dicts = []
