@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 from im2mesh.layers import ResnetBlockFC
-from train import DIMENSION
+from im2mesh.data.preprocessing.constant import DIMENSION
 
 
 def maxpool(x, dim=-1, keepdim=False):
@@ -39,15 +39,15 @@ class SimplePointnet(nn.Module):
         net = self.fc_pos(p)
         net = self.fc_0(self.actvn(net))
         pooled = self.pool(net, dim=1, keepdim=True).expand(net.size())
-        net = torch.cat([net, pooled], dim=DIMENSION)
+        net = torch.cat([net, pooled], dim=2)
 
         net = self.fc_1(self.actvn(net))
         pooled = self.pool(net, dim=1, keepdim=True).expand(net.size())
-        net = torch.cat([net, pooled], dim=DIMENSION)
+        net = torch.cat([net, pooled], dim=2)
 
         net = self.fc_2(self.actvn(net))
         pooled = self.pool(net, dim=1, keepdim=True).expand(net.size())
-        net = torch.cat([net, pooled], dim=DIMENSION)
+        net = torch.cat([net, pooled], dim=2)
 
         net = self.fc_3(self.actvn(net))
 
@@ -90,19 +90,19 @@ class ResnetPointnet(nn.Module):
         net = self.fc_pos(p)
         net = self.block_0(net)
         pooled = self.pool(net, dim=1, keepdim=True).expand(net.size())
-        net = torch.cat([net, pooled], dim=DIMENSION)
+        net = torch.cat([net, pooled], dim=2)
 
         net = self.block_1(net)
         pooled = self.pool(net, dim=1, keepdim=True).expand(net.size())
-        net = torch.cat([net, pooled], dim=DIMENSION)
+        net = torch.cat([net, pooled], dim=2)
 
         net = self.block_2(net)
         pooled = self.pool(net, dim=1, keepdim=True).expand(net.size())
-        net = torch.cat([net, pooled], dim=DIMENSION)
+        net = torch.cat([net, pooled], dim=2)
 
         net = self.block_3(net)
         pooled = self.pool(net, dim=1, keepdim=True).expand(net.size())
-        net = torch.cat([net, pooled], dim=DIMENSION)
+        net = torch.cat([net, pooled], dim=2)
 
         net = self.block_4(net)
 

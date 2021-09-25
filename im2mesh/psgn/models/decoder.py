@@ -1,7 +1,7 @@
 import torch.nn as nn
 import torch.nn.functional as F
 
-from train import DIMENSION
+from im2mesh.data.preprocessing.constant import DIMENSION
 
 
 class Decoder(nn.Module):

@@ -2,8 +2,7 @@ import torch
 import torch.nn as nn
 from im2mesh.pix2mesh.layers import (
     GraphConvolution, GraphProjection, GraphUnpooling)
-from train import DIMENSION
-
+from im2mesh.data.preprocessing.constant import DIMENSION
 
 class Decoder(nn.Module):
     r""" Decoder class for Pixel2Mesh Model.

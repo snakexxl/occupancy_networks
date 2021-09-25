@@ -5,11 +5,14 @@ import numpy as np
 import os
 import argparse
 import time
-import matplotlib; matplotlib.use('Agg')
+import matplotlib;
+
+from im2mesh.data.preprocessing.constant import DIMENSION
+
+matplotlib.use('Agg')
 from im2mesh import config, data
 from im2mesh.checkpoints import CheckpointIO
 
-DIMENSION = 3
 # Arguments
 parser = argparse.ArgumentParser(
     description='Train a 3D reconstruction model.'
@@ -48,7 +51,8 @@ if not os.path.exists(out_dir):
     os.makedirs(out_dir)
 
 # Dataset
-#cfg['data']['dataset']='silhouette'
+if DIMENSION == 2:
+    cfg['data']['dataset']='silhouette' #<-- wenn aktiv muss in constant.py die variable auf 2 sein sonst 3 und noch bei default.yaml+ 61 62 deaktivieren
 train_dataset = config.get_dataset('train', cfg)
 a = train_dataset[0]
 val_dataset = config.get_dataset('val', cfg)
@@ -59,10 +63,11 @@ train_loader = torch.utils.data.DataLoader(
     worker_init_fn=data.worker_init_fn)
 b = next(iter(train_loader))
 
-cfg['data']['dataset']='val2D'
-val_dataset = config.get_dataset('val', cfg)
+if DIMENSION == 2:
+    cfg['data']['dataset']='val2D'
+    val_dataset = config.get_dataset('val', cfg)
 val_loader = torch.utils.data.DataLoader(
-    val_dataset, batch_size=4, num_workers=0, shuffle=False,
+    val_dataset, batch_size=4, num_workers=4, shuffle=False,
     collate_fn=data.collate_remove_none,
     worker_init_fn=data.worker_init_fn)
 c = next(iter(val_loader))

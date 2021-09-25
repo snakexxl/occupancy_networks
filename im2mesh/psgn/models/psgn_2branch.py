@@ -1,7 +1,7 @@
 import torch.nn as nn
 import torch
 
-from train import DIMENSION
+from im2mesh.data.preprocessing.constant import DIMENSION
 
 
 class PCGN_2Branch(nn.Module):

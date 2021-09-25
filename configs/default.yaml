@@ -7,7 +7,7 @@ data:
   train_split: train
   val_split: val
   test_split: test
-  dim: DIMENSION
+  dim: 3
   points_file: points.npz
   points_iou_file: points.npz
   points_subsample: 1024

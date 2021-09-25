@@ -4,7 +4,7 @@ import torch.nn.functional as F
 
 
 # Max Pooling operation
-from train import DIMENSION
+from im2mesh.data.preprocessing.constant import DIMENSION
 
 
 def maxpool(x, dim=-1, keepdim=False):

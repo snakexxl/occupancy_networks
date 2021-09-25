@@ -3,7 +3,7 @@ import torch.nn as nn
 
 
 # Resnet Blocks
-from train import DIMENSION
+from im2mesh.data.preprocessing.constant import DIMENSION
 
 
 class ResnetBlockFC(nn.Module):

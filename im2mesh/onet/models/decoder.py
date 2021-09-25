@@ -6,7 +6,7 @@ from im2mesh.layers import (
     CBatchNorm1d, CBatchNorm1d_legacy,
     ResnetBlockConv1d
 )
-from train import DIMENSION
+from im2mesh.data.preprocessing.constant import DIMENSION
 
 
 class Decoder(nn.Module):
