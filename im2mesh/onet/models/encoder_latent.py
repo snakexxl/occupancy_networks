@@ -4,6 +4,9 @@ import torch.nn.functional as F
 
 
 # Max Pooling operation
+from train import DIMENSION
+
+
 def maxpool(x, dim=-1, keepdim=False):
     out, _ = x.max(dim=dim, keepdim=keepdim)
     return out
@@ -21,7 +24,7 @@ class Encoder(nn.Module):
         dim (int): input dimension
         leaky (bool): whether to use leaky ReLUs
     '''
-    def __init__(self, z_dim=128, c_dim=128, dim=2, leaky=False):
+    def __init__(self, z_dim=128, c_dim=128, dim=DIMENSION, leaky=False):
         super().__init__()
         self.z_dim = z_dim
         self.c_dim = c_dim
@@ -58,11 +61,11 @@ class Encoder(nn.Module):
 
         net = self.fc_1(self.actvn(net))
         pooled = self.pool(net, dim=1, keepdim=True).expand(net.size())
-        net = torch.cat([net, pooled], dim=2)
+        net = torch.cat([net, pooled], dim=DIMENSION)
 
         net = self.fc_2(self.actvn(net))
         pooled = self.pool(net, dim=1, keepdim=True).expand(net.size())
-        net = torch.cat([net, pooled], dim=2)
+        net = torch.cat([net, pooled], dim=DIMENSION)
 
         net = self.fc_3(self.actvn(net))
         # Reduce

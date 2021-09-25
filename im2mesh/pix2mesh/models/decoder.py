@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 from im2mesh.pix2mesh.layers import (
     GraphConvolution, GraphProjection, GraphUnpooling)
+from train import DIMENSION
 
 
 class Decoder(nn.Module):
@@ -21,7 +22,7 @@ class Decoder(nn.Module):
     """
 
     def __init__(self, ellipsoid, device=None, hidden_dim=192,
-                 feat_dim=1280, coor_dim=2, adjust_ellipsoid=False):
+                 feat_dim=1280, coor_dim=DIMENSION, adjust_ellipsoid=False):
         super(Decoder, self).__init__()
         # Save necessary helper matrices in respective variables
         self.initial_coordinates = torch.tensor(ellipsoid[0]).to(device)
@@ -132,7 +133,7 @@ class Decoder(nn.Module):
         # Second Projection Block
         # Layer 15: 156 x (hidden_dim + feat_dim)
         v = self.gp(out[-1], fm, camera_mat)
-        v = torch.cat([v, out[-2]], dim=2)
+        v = torch.cat([v, out[-2]], dim=DIMENSION)
         out.append(v)
         # Layer 16: 618x (hidden_dim + feat_dim)
         out.append(self.gup1(out[-1]))
@@ -150,7 +151,7 @@ class Decoder(nn.Module):
         # Third Projection Block
         # Layer 31: 618 x hidden_dim + feat_dim
         v = self.gp(out[-1], fm, camera_mat)  # 618 x feat_dim
-        v = torch.cat([v, out[-2]], dim=2)
+        v = torch.cat([v, out[-2]], dim=DIMENSION)
         out.append(v)
         # Layer 32: 2466 x hidden_dim + feat_dim
         out.append(self.gup2(out[-1]))

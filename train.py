@@ -9,7 +9,7 @@ import matplotlib; matplotlib.use('Agg')
 from im2mesh import config, data
 from im2mesh.checkpoints import CheckpointIO
 
-
+DIMENSION = 3
 # Arguments
 parser = argparse.ArgumentParser(
     description='Train a 3D reconstruction model.'
@@ -48,7 +48,7 @@ if not os.path.exists(out_dir):
     os.makedirs(out_dir)
 
 # Dataset
-cfg['data']['dataset']='silhouette'
+#cfg['data']['dataset']='silhouette'
 train_dataset = config.get_dataset('train', cfg)
 a = train_dataset[0]
 val_dataset = config.get_dataset('val', cfg)

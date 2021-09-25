@@ -2951,7 +2951,7 @@ static int __pyx_pf_8cyfusion_7PyViews___init__(struct __pyx_obj_8cyfusion_PyVie
     __Pyx_RaiseBufferIndexError(__pyx_t_7);
     __PYX_ERR(1, 74, __pyx_L1_error)
   }
-  __pyx_v_self->views.depthmaps_ = (&(*((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_depthmaps.data + __pyx_t_4 * __pyx_v_depthmaps.strides[0]) ) + __pyx_t_5 * __pyx_v_depthmaps.strides[1]) )) + __pyx_t_6)) ))));
+  __pyx_v_self->views.depthmaps_ = (&(*((float *) ( /* dim=DIMENSION */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_depthmaps.data + __pyx_t_4 * __pyx_v_depthmaps.strides[0]) ) + __pyx_t_5 * __pyx_v_depthmaps.strides[1]) )) + __pyx_t_6)) ))));
 
   /* "cyfusion.pyx":75
  * 
@@ -3007,7 +3007,7 @@ static int __pyx_pf_8cyfusion_7PyViews___init__(struct __pyx_obj_8cyfusion_PyVie
     __Pyx_RaiseBufferIndexError(__pyx_t_7);
     __PYX_ERR(1, 78, __pyx_L1_error)
   }
-  __pyx_v_self->views.Ks_ = (&(*((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_Ks.data + __pyx_t_8 * __pyx_v_Ks.strides[0]) ) + __pyx_t_9 * __pyx_v_Ks.strides[1]) )) + __pyx_t_10)) ))));
+  __pyx_v_self->views.Ks_ = (&(*((float *) ( /* dim=DIMENSION */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_Ks.data + __pyx_t_8 * __pyx_v_Ks.strides[0]) ) + __pyx_t_9 * __pyx_v_Ks.strides[1]) )) + __pyx_t_10)) ))));
 
   /* "cyfusion.pyx":79
  *     self.views.cols_ = depthmaps.shape[2]
@@ -3036,7 +3036,7 @@ static int __pyx_pf_8cyfusion_7PyViews___init__(struct __pyx_obj_8cyfusion_PyVie
     __Pyx_RaiseBufferIndexError(__pyx_t_7);
     __PYX_ERR(1, 79, __pyx_L1_error)
   }
-  __pyx_v_self->views.Rs_ = (&(*((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_Rs.data + __pyx_t_11 * __pyx_v_Rs.strides[0]) ) + __pyx_t_12 * __pyx_v_Rs.strides[1]) )) + __pyx_t_13)) ))));
+  __pyx_v_self->views.Rs_ = (&(*((float *) ( /* dim=DIMENSION */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_Rs.data + __pyx_t_11 * __pyx_v_Rs.strides[0]) ) + __pyx_t_12 * __pyx_v_Rs.strides[1]) )) + __pyx_t_13)) ))));
 
   /* "cyfusion.pyx":80
  *     self.views.Ks_ = &(Ks[0,0,0])
@@ -3302,7 +3302,7 @@ static int __pyx_pf_8cyfusion_8PyVolume___init__(struct __pyx_obj_8cyfusion_PyVo
     __Pyx_RaiseBufferIndexError(__pyx_t_5);
     __PYX_ERR(1, 88, __pyx_L1_error)
   }
-  __pyx_v_self->vol.data_ = (&(*((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_data.data + __pyx_t_1 * __pyx_v_data.strides[0]) ) + __pyx_t_2 * __pyx_v_data.strides[1]) ) + __pyx_t_3 * __pyx_v_data.strides[2]) )) + __pyx_t_4)) ))));
+  __pyx_v_self->vol.data_ = (&(*((float *) ( /* dim=DIMENSION */ ((char *) (((float *) ( /* dim=DIMENSION */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_data.data + __pyx_t_1 * __pyx_v_data.strides[0]) ) + __pyx_t_2 * __pyx_v_data.strides[1]) ) + __pyx_t_3 * __pyx_v_data.strides[2]) )) + __pyx_t_4)) ))));
 
   /* "cyfusion.pyx":89
  *     self.vol = Volume()

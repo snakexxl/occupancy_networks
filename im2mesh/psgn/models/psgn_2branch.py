@@ -1,6 +1,8 @@
 import torch.nn as nn
 import torch
 
+from train import DIMENSION
+
 
 class PCGN_2Branch(nn.Module):
     r''' The 2-Branch decoder of the Point Set Generation Network.
@@ -9,7 +11,7 @@ class PCGN_2Branch(nn.Module):
     branch as well as a convolution-based branch which receives additional
     input from the conditioning network.
     '''
-    def __init__(self, dim=2, c_dim=512, n_points=1024):
+    def __init__(self, dim=DIMENSION, c_dim=512, n_points=1024):
         r''' Initialisation.
 
         Args:

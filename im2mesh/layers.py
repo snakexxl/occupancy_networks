@@ -3,6 +3,9 @@ import torch.nn as nn
 
 
 # Resnet Blocks
+from train import DIMENSION
+
+
 class ResnetBlockFC(nn.Module):
     ''' Fully connected ResNet Block class.
 
@@ -164,7 +167,7 @@ class AffineLayer(nn.Module):
         dim (int): input dimension
     '''
 
-    def __init__(self, c_dim, dim=2):
+    def __init__(self, c_dim, dim=DIMENSION):
         super().__init__()
         self.c_dim = c_dim
         self.dim = dim

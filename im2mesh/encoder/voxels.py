@@ -2,6 +2,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+from train import DIMENSION
+
 
 class VoxelEncoder(nn.Module):
     ''' 3D-convolutional encoder network for voxel input.
@@ -11,7 +13,7 @@ class VoxelEncoder(nn.Module):
         c_dim (int): output dimension
     '''
 
-    def __init__(self, dim=2, c_dim=128):
+    def __init__(self, dim=DIMENSION, c_dim=128):
         super().__init__()
         self.actvn = F.relu
 
@@ -49,7 +51,7 @@ class CoordVoxelEncoder(nn.Module):
         c_dim (int): output dimension
     '''
 
-    def __init__(self, dim=2, c_dim=128):
+    def __init__(self, dim=DIMENSION, c_dim=128):
         super().__init__()
         self.actvn = F.relu
 

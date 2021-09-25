@@ -1,6 +1,8 @@
 import torch.nn as nn
 import torch.nn.functional as F
 
+from train import DIMENSION
+
 
 class Decoder(nn.Module):
     r''' Simple decoder for the Point Set Generation Network.
@@ -13,7 +15,7 @@ class Decoder(nn.Module):
         c_dim (int): dimension of the input vector
         n_points (int): number of output points
     '''
-    def __init__(self, dim=2, c_dim=128, n_points=1024):
+    def __init__(self, dim=DIMENSION, c_dim=128, n_points=1024):
         super().__init__()
         # Attributes
         self.dim = dim

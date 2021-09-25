@@ -2,10 +2,11 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from im2mesh.layers import ResnetBlockFC, AffineLayer
+from train import DIMENSION
 
 
 class VoxelDecoder(nn.Module):
-    def __init__(self, dim=2, z_dim=128, c_dim=128, hidden_size=128):
+    def __init__(self, dim=DIMENSION, z_dim=128, c_dim=128, hidden_size=128):
         super().__init__()
         self.c_dim = c_dim
         self.z_dim = z_dim
@@ -71,7 +72,7 @@ class VoxelDecoder(nn.Module):
 
 
 class FeatureDecoder(nn.Module):
-    def __init__(self, dim=2, z_dim=128, c_dim=128, hidden_size=256):
+    def __init__(self, dim=DIMENSION, z_dim=128, c_dim=128, hidden_size=256):
         super().__init__()
         self.z_dim = z_dim
         self.c_dim = c_dim
@@ -98,7 +99,7 @@ class FeatureDecoder(nn.Module):
     def forward(self, p, z, c, **kwargs):
         batch_size, T, D = p.size()
 
-        c1 = c.view(batch_size, self.c_dim, -1).max(dim=2)[0]
+        c1 = c.view(batch_size, self.c_dim, -1).max(dim=DIMENSION)[0]
         Ap = self.affine(c1, p)
         Ap2 = Ap[:, :, :2] / (Ap[:, :, 2:].abs() + 1e-5)
 

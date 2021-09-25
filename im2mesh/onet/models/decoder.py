@@ -6,6 +6,7 @@ from im2mesh.layers import (
     CBatchNorm1d, CBatchNorm1d_legacy,
     ResnetBlockConv1d
 )
+from train import DIMENSION
 
 
 class Decoder(nn.Module):
@@ -21,7 +22,7 @@ class Decoder(nn.Module):
         leaky (bool): whether to use leaky ReLUs
     '''
 
-    def __init__(self, dim=2, z_dim=128, c_dim=128,
+    def __init__(self, dim=DIMENSION, z_dim=128, c_dim=128,
                  hidden_size=128, leaky=False):
         super().__init__()
         self.z_dim = z_dim
@@ -86,7 +87,7 @@ class DecoderCBatchNorm(nn.Module):
         legacy (bool): whether to use the legacy structure
     '''
 
-    def __init__(self, dim=2, z_dim=128, c_dim=128,
+    def __init__(self, dim=DIMENSION, z_dim=128, c_dim=128,
                  hidden_size=256, leaky=False, legacy=False):
         super().__init__()
         self.z_dim = z_dim
@@ -148,7 +149,7 @@ class DecoderCBatchNorm2(nn.Module):
         n_blocks (int): number of ResNet blocks
     '''
 
-    def __init__(self, dim=2, z_dim=0, c_dim=128,
+    def __init__(self, dim=DIMENSION, z_dim=0, c_dim=128,
                  hidden_size=256, n_blocks=5):
         super().__init__()
         self.z_dim = z_dim
@@ -192,7 +193,7 @@ class DecoderCBatchNormNoResnet(nn.Module):
         leaky (bool): whether to use leaky ReLUs
     '''
 
-    def __init__(self, dim=2, z_dim=128, c_dim=128,
+    def __init__(self, dim=DIMENSION, z_dim=128, c_dim=128,
                  hidden_size=256, leaky=False):
         super().__init__()
         self.z_dim = z_dim
@@ -257,7 +258,7 @@ class DecoderBatchNorm(nn.Module):
         leaky (bool): whether to use leaky ReLUs
     '''
 
-    def __init__(self, dim=2, z_dim=128, c_dim=128,
+    def __init__(self, dim=DIMENSION, z_dim=128, c_dim=128,
                  hidden_size=256, leaky=False):
         super().__init__()
         self.z_dim = z_dim
