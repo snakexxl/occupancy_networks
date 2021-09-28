@@ -95,7 +95,7 @@ class Trainer(BaseTrainer):
         eval_dict['iou'] = iou
 
         # Estimate voxel iou
-        if voxels_occ is not None:
+        if False and voxels_occ is not None:
             voxels_occ = voxels_occ.to(device)
             points_voxels = make_3d_grid(
                 (-0.5 + 1/64,) * 3, (0.5 - 1/64,) * 3, (32,) * 3)

@@ -47,7 +47,10 @@ def silhouette_to_prediction_function(
     """
 
     def prediction_function(point: np.ndarray) -> bool:
-        return silhouette[int(point[0]), int(point[1])]
+        try:
+            return silhouette[int(point[0]), int(point[1])]
+        except:
+            return False
 
     return prediction_function
 
