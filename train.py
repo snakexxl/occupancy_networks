@@ -63,9 +63,6 @@ train_loader = torch.utils.data.DataLoader(
     worker_init_fn=data.worker_init_fn)
 b = next(iter(train_loader))
 
-if DIMENSION == 2:
-    cfg['data']['dataset']='val2D'
-    val_dataset = config.get_dataset('val', cfg)
 val_loader = torch.utils.data.DataLoader(
     val_dataset, batch_size=4, num_workers=4, shuffle=False,
     collate_fn=data.collate_remove_none,
@@ -148,13 +145,13 @@ while True:
         # Save checkpoint
         if (checkpoint_every > 0 and (it % checkpoint_every) == 0):
             print('Saving checkpoint')
-            checkpoint_io.save('model.pt', epoch_it=epoch_it, it=it,
+            checkpoint_io.save(f'model_{DIMENSION}d.pt', epoch_it=epoch_it, it=it,
                                loss_val_best=metric_val_best)
 
         # Backup if necessary
         if (backup_every > 0 and (it % backup_every) == 0):
             print('Backup checkpoint')
-            checkpoint_io.save('model_%d.pt' % it, epoch_it=epoch_it, it=it,
+            checkpoint_io.save(f'model_%d_{DIMENSION}d.pt' % it, epoch_it=epoch_it, it=it,
                                loss_val_best=metric_val_best)
         # Run validation
         if validate_every > 0 and (it % validate_every) == 0:
@@ -169,7 +166,7 @@ while True:
             if model_selection_sign * (metric_val - metric_val_best) > 0:
                 metric_val_best = metric_val
                 print('New best model (loss %.4f)' % metric_val_best)
-                checkpoint_io.save('model_best.pt', epoch_it=epoch_it, it=it,
+                checkpoint_io.save(f'model_best_{DIMENSION}d.pt', epoch_it=epoch_it, it=it,
                                    loss_val_best=metric_val_best)
 
         # Exit if necessary

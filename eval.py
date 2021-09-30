@@ -6,7 +6,7 @@ import numpy as np
 from tqdm import tqdm
 from im2mesh import config, data
 from im2mesh.checkpoints import CheckpointIO
-
+from im2mesh.data.preprocessing.constant import DIMENSION
 
 parser = argparse.ArgumentParser(
     description='Evaluate mesh algorithms.'
@@ -30,6 +30,7 @@ dataset = config.get_dataset('test', cfg, return_idx=True)
 model = config.get_model(cfg, device=device, dataset=dataset)
 
 checkpoint_io = CheckpointIO(out_dir, model=model)
+cfg['test']['model_file']= f'model_best_{DIMENSION}d.pt'
 try:
     checkpoint_io.load(cfg['test']['model_file'])
 except FileExistsError:
