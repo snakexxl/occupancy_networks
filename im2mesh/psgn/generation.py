@@ -1,5 +1,5 @@
 import torch
-from im2mesh.utils.io import export_pointcloud
+#from im2mesh.utils.io import export_pointcloud
 import tempfile
 import subprocess
 import os

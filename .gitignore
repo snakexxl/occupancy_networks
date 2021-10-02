@@ -15,3 +15,8 @@ build
 /im2mesh/utils/libsimplify/simplify_mesh.cpp
 /im2mesh/utils/libsimplify/build
 
+cuda-repo-ubuntu2004-11-4-local_11.4.0-470.42.01-1_amd64.deb
+*.deb
+*.1
+*.1
+*.deb

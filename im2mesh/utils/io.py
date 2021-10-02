@@ -1,5 +1,5 @@
 import os
-from plyfile import PlyElement, PlyData
+#from plyfile import PlyElement, PlyData
 import numpy as np
 
 
