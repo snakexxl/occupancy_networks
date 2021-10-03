@@ -31,7 +31,7 @@ class Generator3D(object):
         preprocessor (nn.Module): preprocessor for inputs
     '''
 
-    def __init__(self, model, points_batch_size=100000,
+    def __init__(self, model, points_batch_size=8000,
                  threshold=0.5, refinement_step=0, device=None,
                  resolution0=16, upsampling_steps=3,
                  with_normals=False, padding=0.1, sample=False,

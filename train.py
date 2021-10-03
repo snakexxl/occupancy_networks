@@ -58,13 +58,13 @@ a = train_dataset[0]
 val_dataset = config.get_dataset('val', cfg)
 
 train_loader = torch.utils.data.DataLoader(
-    train_dataset, batch_size=batch_size, num_workers=4, shuffle=True,
+    train_dataset, batch_size=batch_size, num_workers=0, shuffle=True,
     collate_fn=data.collate_remove_none,
     worker_init_fn=data.worker_init_fn)
 b = next(iter(train_loader))
 
 val_loader = torch.utils.data.DataLoader(
-    val_dataset, batch_size=4, num_workers=4, shuffle=False,
+    val_dataset, batch_size=4, num_workers=0, shuffle=False,
     collate_fn=data.collate_remove_none,
     worker_init_fn=data.worker_init_fn)
 c = next(iter(val_loader))
@@ -172,6 +172,6 @@ while True:
         # Exit if necessary
         if exit_after > 0 and (time.time() - t0) >= exit_after:
             print('Time limit reached. Exiting.')
-            checkpoint_io.save('model.pt', epoch_it=epoch_it, it=it,
+            checkpoint_io.save(f'model__{DIMENSION}.pt', epoch_it=epoch_it, it=it,
                                loss_val_best=metric_val_best)
             exit(3)
