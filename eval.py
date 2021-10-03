@@ -17,6 +17,8 @@ parser.add_argument('--no-cuda', action='store_true', help='Do not use cuda.')
 # Get configuration and basic arguments
 args = parser.parse_args()
 cfg = config.load_config(args.config, 'configs/default.yaml')
+if DIMENSION == 2:
+    cfg['data']['dataset']='silhouette'
 is_cuda = (torch.cuda.is_available() and not args.no_cuda)
 device = torch.device("cuda" if is_cuda else "cpu")
 
