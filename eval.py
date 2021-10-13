@@ -49,8 +49,12 @@ print('Total number of parameters: %d' % nparameters)
 
 # Evaluate
 model.eval()
+if False:
+    for i in range(len(dataset)):
+        data = dataset[i]
+        trainer.predict_for_one_image(data)
 
-eval_dicts = []   
+eval_dicts = []
 print('Evaluating networks...')
 
 
@@ -71,7 +75,7 @@ for it, data in enumerate(tqdm(test_loader)):
         model_dict = dataset.get_model_dict(idx)
     except AttributeError:
         model_dict = {'model': str(idx), 'category': 'n/a'}
-    
+
     modelname = model_dict['model']
     category_id = model_dict['category']
 

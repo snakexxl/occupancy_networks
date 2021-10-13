@@ -58,7 +58,7 @@ class DatasetSilhouetteKeypoints:
     # load groundtruth Silhouette from images
     # is_in_silhoutte needs to be defined depended on the ground truth
 
-    def __getitem__(self, index)->Dict[str,np.ndarray]:
+    def __getitem__(self, index)->Dict[str, np.ndarray]:
         silhouette_gt = silhouette_gt_from_image(index)
         random_points = generateRandomPoints(1024,silhouette_gt)
         random_points_iou = generateRandomPoints(8000,silhouette_gt)
@@ -76,6 +76,7 @@ class DatasetSilhouetteKeypoints:
             item['voxels'] = silhouette_gt
             item['points_iou'] = random_points_iou
             item['points_iou.occ'] = points_iou_occ
+            item['idx'] = index
         else:
             #print('did not enter')
             pass
