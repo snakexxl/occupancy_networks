@@ -70,19 +70,20 @@ class Trainer(BaseTrainer):
         q_z = dist.Normal(mean_z, torch.exp(logstd_z))
         return q_z
     def predict_for_one_image(self, data):
-        self.model.eval()
-        p = data.get('points')
+        with torch.no_grad():
+            self.model.eval()
+            p = data.get('points')
         #inputs = data.get('inputs')
-        inputs = data.get('inputs', torch.empty(p.size(0), 0))
+            inputs = data.get('inputs', torch.empty(p.size(0), 0))
         #inputs = inputs.reshape(1,32,2)
-        kwargs = {}
-        c = self.model.encode_inputs(inputs)
-        q_z = self.model.infer_bild(p, c, **kwargs)
-        z = q_z.rsample()
-        p_r = self.model.decode(p, z, c, **kwargs)
-        bild_matrix = p_r.get('probs')
-        plt.imshow(bild_matrix.numpy()[0], cmap='gray')
-        PIL.Image.fromarray(bild_matrix)
+            kwargs = {}
+            c = self.model.encode_inputs(inputs)
+            q_z = self.model.infer_bild(p, c, **kwargs)
+            z = q_z.rsample()
+            p_r = self.model.decode(p, z, c, **kwargs)
+            bild_matrix = p_r.get('probs')
+            plt.imshow(bild_matrix.numpy()[0], cmap='gray')
+            PIL.Image.fromarray(bild_matrix)
 
     def eval_step(self, data):
         ''' Performs an evaluation step.

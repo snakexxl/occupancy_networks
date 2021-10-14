@@ -68,6 +68,9 @@ for it, data in enumerate(tqdm(test_loader)):
     if data is None:
         print('Invalid data.')
         continue
+    #print(type(data))
+#mein code testing: test für die generierung von der 2d silhouette
+    trainer.predict_for_one_image(data)
     # Get index etc.
     idx = data['idx'].item()
 
