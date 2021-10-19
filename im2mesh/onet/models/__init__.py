@@ -64,6 +64,13 @@ class OccupancyNetwork(nn.Module):
         p_r = self.decode(p, z, c, **kwargs)
         return p_r
 
+    def compute_elbo_bild(self, p, inputs, **kwargs):
+        c = self.encode_inputs(inputs)
+        q_z = self.infer_Bild(p, c, **kwargs)
+        z = q_z.rsample()
+        p_r = self.decode(p, z, c, **kwargs)
+        return p_r
+
     def compute_elbo(self, p, occ, inputs, **kwargs):
         ''' Computes the expectation lower bound.
 
@@ -110,7 +117,23 @@ class OccupancyNetwork(nn.Module):
         logits = self.decoder(p, z, c, **kwargs)
         p_r = dist.Bernoulli(logits=logits)
         return p_r
+    def infer_Bild(self, p, c, **kwargs):
+        ''' Infers z.
 
+        Args:
+            p (tensor): points tensor
+            occ (tensor): occupancy values for occ
+            c (tensor): latent conditioned code c
+        '''
+        if self.encoder_latent is not None:
+            print("wird doch gebraucht")
+        else:
+            batch_size = p.size(0)
+            mean_z = torch.empty(batch_size, 0).to(self._device)
+            logstd_z = torch.empty(batch_size, 0).to(self._device)
+
+        q_z = dist.Normal(mean_z, torch.exp(logstd_z))
+        return q_z
     def infer_z(self, p, occ, c, **kwargs):
         ''' Infers z.
 

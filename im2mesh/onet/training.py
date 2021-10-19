@@ -1,6 +1,7 @@
 import os
 
 import PIL
+import numpy as np
 from tqdm import trange
 import torch
 from torch.nn import functional as F
@@ -10,7 +11,26 @@ from im2mesh.common import (
 )
 from im2mesh.utils import visualize as vis
 from im2mesh.training import BaseTrainer
-import matplotlib.pyplot as plt
+from PIL import Image
+import os
+
+
+def createImagePoints(numberOfPoints):
+    height = numberOfPoints
+    width = numberOfPoints
+    random_height = np.random.uniform(low=0, high=height, size=numberOfPoints).astype(np.float32)
+    random_width = np.random.uniform(0, width, numberOfPoints).astype(np.float32)
+    p = np.stack([random_height, random_width], axis=1)
+    return p
+
+
+def tensor_to_image(tensor):
+    tensor = tensor*255
+    tensor = np.array(tensor, dtype=np.uint8)
+    if np.ndim(tensor)>3:
+        assert tensor.shape[0] == 1
+        tensor = tensor[0]
+    return PIL.Image.fromarray(tensor)
 
 
 class Trainer(BaseTrainer):
@@ -52,39 +72,29 @@ class Trainer(BaseTrainer):
         loss.backward()
         self.optimizer.step()
         return loss.item()
-    def infer_Bild(self, p, c, **kwargs):
-        ''' Infers z.
 
-        Args:
-            p (tensor): points tensor
-            occ (tensor): occupancy values for occ
-            c (tensor): latent conditioned code c
-        '''
-        if self.encoder_latent is not None:
-            print("wird doch gebraucht")
-        else:
-            batch_size = p.size(0)
-            mean_z = torch.empty(batch_size, 0).to(self._device)
-            logstd_z = torch.empty(batch_size, 0).to(self._device)
-
-        q_z = dist.Normal(mean_z, torch.exp(logstd_z))
-        return q_z
     def predict_for_one_image(self, data):
-        with torch.no_grad():
-            self.model.eval()
-            p = data.get('points')
-        #inputs = data.get('inputs')
-            inputs = data.get('inputs', torch.empty(p.size(0), 0))
-        #inputs = inputs.reshape(1,32,2)
-            kwargs = {}
-            c = self.model.encode_inputs(inputs)
-            q_z = self.model.infer_bild(p, c, **kwargs)
-            z = q_z.rsample()
-            p_r = self.model.decode(p, z, c, **kwargs)
-            bild_matrix = p_r.get('probs')
-            plt.imshow(bild_matrix.numpy()[0], cmap='gray')
-            PIL.Image.fromarray(bild_matrix)
+        self.model.eval()
 
+        device = self.device
+        #p = data.get('points').to(device)
+        p = createImagePoints(1024)
+        p = torch.from_numpy(p)
+        p = p.reshape(1,1024,2).to(device)
+        inputs = data.get('inputs', torch.empty(p.size(0), 0)).to(device)
+        kwargs = {}
+        with torch.no_grad():
+            p_r = self.model.compute_elbo_bild(
+                p, inputs, **kwargs)
+
+        bild_matrix = p_r.probs
+        bild_matrix = bild_matrix.reshape((32,32))
+        bild = tensor_to_image(bild_matrix.cpu())
+        image_path=f"/home/john/Github/occupancy_networks/out/silhouette"
+        image = bild.save(f"{image_path}/silhouette.png")
+        #plt.imshow(bild.cpu().numpy()[0], cmap='gray')
+ #       PIL.Image.fromarray(bild_matrix)
+        print("done")
     def eval_step(self, data):
         ''' Performs an evaluation step.
 

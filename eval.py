@@ -70,7 +70,7 @@ for it, data in enumerate(tqdm(test_loader)):
         continue
     #print(type(data))
 #mein code testing: test für die generierung von der 2d silhouette
-    trainer.predict_for_one_image(data)
+    #trainer.predict_for_one_image(data)
     # Get index etc.
     idx = data['idx'].item()
 
@@ -94,6 +94,8 @@ for it, data in enumerate(tqdm(test_loader)):
         'modelname':modelname,
     }
     eval_dicts.append(eval_dict)
+    #mein eval step für ein bild
+    trainer.predict_for_one_image(data)
     eval_data = trainer.eval_step(data)
     eval_dict.update(eval_data)
 
