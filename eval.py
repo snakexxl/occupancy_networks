@@ -21,7 +21,8 @@ if DIMENSION == 2:
     cfg['data']['dataset']='silhouette'
 is_cuda = (torch.cuda.is_available() and not args.no_cuda)
 device = torch.device("cuda" if is_cuda else "cpu")
-
+y = 0
+d = 0
 # Shorthands
 out_dir = cfg['training']['out_dir']
 out_file = os.path.join(out_dir, 'eval_full.pkl')
@@ -95,7 +96,14 @@ for it, data in enumerate(tqdm(test_loader)):
     }
     eval_dicts.append(eval_dict)
     #mein eval step für ein bild
-    trainer.predict_for_one_image(data)
+
+    if y < 1:
+        trainer.predict_for_one_image(data,d)
+        d += 1
+    y += 1
+    if y > 100:
+        print("100 wurde überschritten")
+        y = 0
     eval_data = trainer.eval_step(data)
     eval_dict.update(eval_data)
 

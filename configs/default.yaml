@@ -41,10 +41,10 @@ model:
 training:
   out_dir:  out/default
   batch_size: 10
-  print_every: 10
-  visualize_every: 2000
-  checkpoint_every: 1000
-  validate_every: 2000
+  print_every: 100
+  visualize_every: 4000
+  checkpoint_every: 4000
+  validate_every: 4000
   backup_every: 100000
   eval_sample: false
   model_selection_metric: loss
