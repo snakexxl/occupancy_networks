@@ -64,14 +64,14 @@ train_loader = torch.utils.data.DataLoader(
 b = next(iter(train_loader))
 
 val_loader = torch.utils.data.DataLoader(
-    val_dataset, batch_size=6, num_workers=2, shuffle=False,
+    val_dataset, batch_size=10, num_workers=2, shuffle=False,
     collate_fn=data.collate_remove_none,
     worker_init_fn=data.worker_init_fn)
 c = next(iter(val_loader))
 
 # For visualizations
 vis_loader = torch.utils.data.DataLoader(
-    val_dataset, batch_size=6, shuffle=True,
+    val_dataset, batch_size=10, shuffle=True,
     collate_fn=data.collate_remove_none,
     worker_init_fn=data.worker_init_fn)
 data_vis = next(iter(vis_loader))
@@ -81,8 +81,8 @@ model = config.get_model(cfg, device=device, dataset=train_dataset)
 
 # Intialize training
 npoints = 1000
-#optimizer = optim.Adam(model.parameters(), lr=1e-6)
-optimizer = optim.SGD(model.parameters(), lr=1e-6, momentum=0.9)
+optimizer = optim.Adam(model.parameters(), lr=1e-6)
+#optimizer = optim.SGD(model.parameters(), lr=5e-7, momentum=0.9)
 trainer = config.get_trainer(model, optimizer, cfg, device=device)
 
 checkpoint_io = CheckpointIO(out_dir, model=model, optimizer=optimizer)

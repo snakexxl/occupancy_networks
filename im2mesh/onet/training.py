@@ -16,17 +16,19 @@ import os
 
 
 def createImagePoints(numberOfPoints):
-    height = numberOfPoints
-    width = numberOfPoints
-    random_height = np.random.uniform(low=0, high=height, size=numberOfPoints).astype(np.float32)
-    random_width = np.random.uniform(0, width, numberOfPoints).astype(np.float32)
-    p = np.stack([random_height, random_width], axis=1)
+    xvalues = np.linspace(0, 1000, 64)
+    yvalues = np.linspace(0, 1000, 64)
+    xx, yy = np.meshgrid(xvalues, yvalues)
+    xx = xx.flatten()
+    yy = yy.flatten()
+    p = np.stack([xx, yy], axis=1).astype(np.float32)
     return p
 
 
 def tensor_to_image(tensor):
     tensor = tensor*255
     tensor = np.array(tensor, dtype=np.uint8)
+    tensor = tensor.transpose()
     if np.ndim(tensor)>3:
         assert tensor.shape[0] == 1
         tensor = tensor[0]
@@ -73,14 +75,14 @@ class Trainer(BaseTrainer):
         self.optimizer.step()
         return loss.item()
 
-    def predict_for_one_image(self, data):
+    def predict_for_one_image(self, data,y):
         self.model.eval()
 
         device = self.device
         #p = data.get('points').to(device)
-        p = createImagePoints(1024)
+        p = createImagePoints(4096)
         p = torch.from_numpy(p)
-        p = p.reshape(1,1024,2).to(device)
+        p = p.reshape(1,4096,2).to(device)
         inputs = data.get('inputs', torch.empty(p.size(0), 0)).to(device)
         kwargs = {}
         with torch.no_grad():
@@ -88,13 +90,11 @@ class Trainer(BaseTrainer):
                 p, inputs, **kwargs)
 
         bild_matrix = p_r.probs
-        bild_matrix = bild_matrix.reshape((32,32))
+        bild_matrix = bild_matrix.reshape((64,64))
         bild = tensor_to_image(bild_matrix.cpu())
         image_path=f"/home/john/Github/occupancy_networks/out/silhouette"
-        image = bild.save(f"{image_path}/silhouette.png")
-        #plt.imshow(bild.cpu().numpy()[0], cmap='gray')
- #       PIL.Image.fromarray(bild_matrix)
-        print("done")
+        bild.save(f"{image_path}/silhouette{y}.png")
+
     def eval_step(self, data):
         ''' Performs an evaluation step.
 
