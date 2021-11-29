@@ -16,7 +16,7 @@ def generateRandomPoints(number_of_points, silhouette_gt):
     return random_points_in_image
 
 
-def importKeypointsFromCdf(directory='/home/john/Github/occupancy_networks/data/inputs/cdf_file/'):
+def importKeypointsFromCdf(directory='/home/johannesselbert/Documents/GitHub/inputs/cdffile'):
     list_of_key_points = []
     for filename in os.listdir(directory):
         filepath = os.path.join(directory, filename)
@@ -38,7 +38,7 @@ def silhouette_gt_from_image(frame_index:int):
     Returns:
 
     """
-    image_path = f"/home/john/Github/occupancy_networks/data/inputs/gt_video_frame/Directions/{frame_index}.png"
+    image_path = f"/home/johannesselbert/Documents/GitHub/inputs/groundtruthvideoframe/{frame_index}.png"
     img = Image.open(image_path)
     silhouette_gt = np.array(img)
     rgb_weights = [0.2989, 0.5870, 0.1140]

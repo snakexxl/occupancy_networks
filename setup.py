@@ -13,16 +13,17 @@ numpy_include_dir = numpy.get_include()
 
 # Extensions
 # pykdtree (kd tree)
-#pykdtree = Extension(
-  #  'im2mesh.utils.libkdtree.pykdtree.kdtree',
-   # sources=[
-   #     'im2mesh/utils/libkdtree/pykdtree/kdtree.c',
-   #     'im2mesh/utils/libkdtree/pykdtree/_kdtree_core.c'
-  #  ],
-  #  language='c',
-  #  extra_compile_args=['-std=c99', '-O3', '-fopenmp'],
-  #  extra_link_args=['-lgomp'],
-#)
+# pykdtree = Extension(
+#     'im2mesh.utils.libkdtree.pykdtree.kdtree',
+#     sources=[
+#         'im2mesh/utils/libkdtree/pykdtree/kdtree.c',
+#         'im2mesh/utils/libkdtree/pykdtree/_kdtree_core.c'
+#     ],
+#     language='c',
+#     extra_compile_args=['-std=c99', '-O3', '-fopenmp'],
+#     extra_link_args=['-lgomp'],
+#     include_dirs=[numpy_include_dir]
+# )
 
 # mcubes (marching cubes algorithm)
 mcubes_module = Extension(
@@ -43,7 +44,8 @@ triangle_hash_module = Extension(
     sources=[
         'im2mesh/utils/libmesh/triangle_hash.pyx'
     ],
-    libraries=['m']  # Unix-like specific
+    libraries=['m'],  # Unix-like specific
+    include_dirs=[numpy_include_dir]
 )
 
 # mise (efficient mesh extraction)
@@ -59,7 +61,8 @@ simplify_mesh_module = Extension(
     'im2mesh.utils.libsimplify.simplify_mesh',
     sources=[
         'im2mesh/utils/libsimplify/simplify_mesh.pyx'
-    ]
+    ],
+    include_dirs=[numpy_include_dir]
 )
 
 # voxelization (efficient mesh voxelization)
@@ -76,11 +79,11 @@ dmc_pred2mesh_module = CppExtension(
     'im2mesh.dmc.ops.cpp_modules.pred2mesh',
     sources=[
         'im2mesh/dmc/ops/cpp_modules/pred_to_mesh_.cpp',
-    ]   
+    ]
 )
 
 dmc_cuda_module = CUDAExtension(
-    'im2mesh.dmc.ops._cuda_ext', 
+    'im2mesh.dmc.ops._cuda_ext',
     sources=[
         'im2mesh/dmc/ops/src/extension.cpp',
         'im2mesh/dmc/ops/src/curvature_constraint_kernel.cu',
@@ -99,8 +102,8 @@ ext_modules = [
     mise_module,
     simplify_mesh_module,
     voxelize_module,
-    dmc_pred2mesh_module,
-    dmc_cuda_module,
+    # dmc_pred2mesh_module,
+    # dmc_cuda_module,
 ]
 
 setup(
