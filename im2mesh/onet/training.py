@@ -92,7 +92,7 @@ class Trainer(BaseTrainer):
         bild_matrix = p_r.probs
         bild_matrix = bild_matrix.reshape((64,64))
         bild = tensor_to_image(bild_matrix.cpu())
-        image_path=f"/home/john/Github/occupancy_networks/out/silhouette"
+        image_path=f"/home/johannesselbert/Documents/GitHub/occupancy_networks/out/silhouette"
         bild.save(f"{image_path}/silhouette{y}.png")
 
     def eval_step(self, data):
