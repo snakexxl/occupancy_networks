@@ -38,7 +38,7 @@ def silhouette_gt_from_image(frame_index:int):
     Returns:
 
     """
-    image_path = f"/home/johannesselbert/Documents/GitHub/inputs/groundtruthvideoframe/{frame_index}.png"
+    image_path = f"/home/johannesselbert/Documents/GitHub/inputs/groundtruthvideoframe/Discussion/{frame_index}.png"
     img = Image.open(image_path)
     silhouette_gt = np.array(img)
     rgb_weights = [0.2989, 0.5870, 0.1140]
