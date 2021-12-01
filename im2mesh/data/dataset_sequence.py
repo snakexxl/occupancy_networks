@@ -27,6 +27,9 @@ def importKeypointsFromCdf(directory='/home/johannesselbert/Documents/GitHub/inp
         else:  # print(filename)
             continue
     list_of_key_points_concatenated = np.concatenate(list_of_key_points,0)
+    #todo make it possible two use more than one cdf matrix
+
+
     return list_of_key_points_concatenated # shape ((number_frames*numbervideos) x number_keypoints)
 
 def silhouette_gt_from_image(frame_index:int):
