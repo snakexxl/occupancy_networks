@@ -27,7 +27,7 @@ def importKeypointsFromCdf(directory='/home/johannesselbert/Documents/GitHub/inp
         else:  # print(filename)
             continue
     list_of_key_points_concatenated = np.concatenate(list_of_key_points,0)
-    #todo make it possible two use more than one cdf matrix
+    #todo check if matrix were correctly fusioed together
 
 
     return list_of_key_points_concatenated # shape ((number_frames*numbervideos) x number_keypoints)
