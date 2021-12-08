@@ -41,13 +41,17 @@ def silhouette_gt_from_image(frame_index:int):
     Returns:
 
     """
-    image_path = f"/home/johannesselbert/Documents/GitHub/inputs/groundtruthvideoframe/Discussion/{frame_index}.png"
+    image_path = f"/home/johannesselbert/Documents/GitHub/inputs/groundtruthvideoframe/Testgroup1/{frame_index}.png"
     img = Image.open(image_path)
     silhouette_gt = np.array(img)
     rgb_weights = [0.2989, 0.5870, 0.1140]
     silhouette_gt = np.dot(silhouette_gt[..., :3], rgb_weights)
     silhouette_gt = silhouette_gt > 0
     silhouette_gt = np.float32(silhouette_gt)
+    while silhouette_gt.shape[0] > 1000:
+        silhouette_gt = np.delete(silhouette_gt, 1000, 0)
+    while silhouette_gt.shape[1] > 1000:
+        silhouette_gt = np.delete(silhouette_gt, 1000, 1)
     return silhouette_gt
 
 
@@ -63,8 +67,8 @@ class DatasetSilhouetteKeypoints:
 
     def __getitem__(self, index)->Dict[str, np.ndarray]:
         silhouette_gt = silhouette_gt_from_image(index)
-        random_points = generateRandomPoints(1024,silhouette_gt)
-        random_points_iou = generateRandomPoints(8000,silhouette_gt)
+        random_points = generateRandomPoints(2048,silhouette_gt)
+        random_points_iou = generateRandomPoints(16000,silhouette_gt)
         is_in_silhoutte = silhouette_to_prediction_function(silhouette_gt)
         points_occ = np.stack([is_in_silhoutte(point)for point in random_points])
         points_iou_occ = np.stack([is_in_silhoutte(point)for point in random_points_iou])
