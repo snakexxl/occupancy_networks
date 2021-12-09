@@ -9,6 +9,7 @@ from torch import distributions as dist
 from im2mesh.common import (
     compute_iou, make_3d_grid
 )
+from im2mesh.data.preprocessing.constant import IMAGE_SIZE
 from im2mesh.utils import visualize as vis
 from im2mesh.training import BaseTrainer
 from PIL import Image
@@ -16,8 +17,8 @@ import os
 
 
 def createImagePoints(numberOfPoints):
-    xvalues = np.linspace(0, 1000, 64)
-    yvalues = np.linspace(0, 1000, 64)
+    xvalues = np.linspace(0, 1000, IMAGE_SIZE)
+    yvalues = np.linspace(0, 1000, IMAGE_SIZE)
     xx, yy = np.meshgrid(xvalues, yvalues)
     xx = xx.flatten()
     yy = yy.flatten()
@@ -80,9 +81,9 @@ class Trainer(BaseTrainer):
 
         device = self.device
         #p = data.get('points').to(device)
-        p = createImagePoints(4096)
+        p = createImagePoints(IMAGE_SIZE*IMAGE_SIZE)
         p = torch.from_numpy(p)
-        p = p.reshape(1,4096,2).to(device)
+        p = p.reshape(1, (IMAGE_SIZE*IMAGE_SIZE), 2).to(device)
         inputs = data.get('inputs', torch.empty(p.size(0), 0)).to(device)
         kwargs = {}
         with torch.no_grad():
@@ -90,7 +91,7 @@ class Trainer(BaseTrainer):
                 p, inputs, **kwargs)
 
         bild_matrix = p_r.probs
-        bild_matrix = bild_matrix.reshape((64,64))
+        bild_matrix = bild_matrix.reshape((IMAGE_SIZE,IMAGE_SIZE))
         bild = tensor_to_image(bild_matrix.cpu())
         image_path=f"/home/johannesselbert/Documents/GitHub/occupancy_networks/out/silhouette"
         bild.save(f"{image_path}/silhouette{y}.png")
