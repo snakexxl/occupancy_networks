@@ -18,7 +18,8 @@ def generateRandomPoints(number_of_points, silhouette_gt):
 
 def importKeypointsFromCdf(directory='/home/johannesselbert/Documents/GitHub/inputs/cdffile'):
     list_of_key_points = []
-    for filename in os.listdir(directory):
+    for filename in sorted(os.listdir(directory)):
+        print(filename)
         filepath = os.path.join(directory, filename)
         if filepath.endswith(".cdf"):
             keypoints = read_cdf(filepath) # shape ( number_frames x number_keypoints)

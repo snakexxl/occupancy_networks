@@ -58,13 +58,13 @@ a = train_dataset[0]
 val_dataset = config.get_dataset('val', cfg)
 
 train_loader = torch.utils.data.DataLoader(
-    train_dataset, batch_size=batch_size, num_workers=4, shuffle=True,
+    train_dataset, batch_size=batch_size, num_workers=6, shuffle=True,
     collate_fn=data.collate_remove_none,
     worker_init_fn=data.worker_init_fn)
 b = next(iter(train_loader))
 
 val_loader = torch.utils.data.DataLoader(
-    val_dataset, batch_size=10, num_workers=4, shuffle=False,
+    val_dataset, batch_size=10, num_workers=6, shuffle=False,
     collate_fn=data.collate_remove_none,
     worker_init_fn=data.worker_init_fn)
 c = next(iter(val_loader))

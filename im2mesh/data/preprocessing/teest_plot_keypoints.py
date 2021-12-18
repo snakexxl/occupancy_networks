@@ -8,7 +8,7 @@ if __name__ == "__main__":
     save_dir = "/home/johannesselbert/Documents/GitHub/inputs/groundtruthvideoframe"
 
 idx = 0
-for filename in os.listdir(glob_expression_videos):
+for filename in sorted(os.listdir(glob_expression_videos)):
     filepath = os.path.join(glob_expression_videos, filename)
     if filepath.endswith(".mp4"):
         idx = dump_png_from_videos(filepath, save_dir, idx)
