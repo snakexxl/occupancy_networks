@@ -80,7 +80,7 @@ data_vis = next(iter(vis_loader))
 model = config.get_model(cfg, device=device, dataset=train_dataset)
 
 # Intialize training
-npoints = 1000
+npoints = 3000
 optimizer = optim.Adam(model.parameters(), lr=1e-6)
 #optimizer = optim.SGD(model.parameters(), lr=5e-7, momentum=0.9)
 trainer = config.get_trainer(model, optimizer, cfg, device=device)

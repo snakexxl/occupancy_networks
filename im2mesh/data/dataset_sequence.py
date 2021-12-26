@@ -85,6 +85,7 @@ class DatasetSilhouetteKeypoints:
             item['points_iou'] = random_points_iou
             item['points_iou.occ'] = points_iou_occ
             item['idx'] = index
+            item['original_silhouette'] = silhouette_gt
         else:
             #print('did not enter')
             pass

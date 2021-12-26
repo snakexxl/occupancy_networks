@@ -85,6 +85,7 @@ class Trainer(BaseTrainer):
         p = torch.from_numpy(p)
         p = p.reshape(1, (IMAGE_SIZE*IMAGE_SIZE), 2).to(device)
         inputs = data.get('inputs', torch.empty(p.size(0), 0)).to(device)
+        original_silhouette= data.get('original_silhouette', torch.empty(p.size(0), 0)).to(device)
         kwargs = {}
         with torch.no_grad():
             p_r = self.model.compute_elbo_bild(
@@ -92,9 +93,12 @@ class Trainer(BaseTrainer):
 
         bild_matrix = p_r.probs
         bild_matrix = bild_matrix.reshape((IMAGE_SIZE,IMAGE_SIZE))
+        original_silhouette = original_silhouette.reshape((IMAGE_SIZE, IMAGE_SIZE))
+        bild_silhouette = tensor_to_image(original_silhouette.cpu())
         bild = tensor_to_image(bild_matrix.cpu())
         image_path=f"/home/johannesselbert/Documents/GitHub/occupancy_networks/out/silhouette"
         bild.save(f"{image_path}/silhouette{y}.png")
+        bild_silhouette.save(f"{image_path}/originalsilhouette{y}.png")
 
     def eval_step(self, data):
         ''' Performs an evaluation step.
