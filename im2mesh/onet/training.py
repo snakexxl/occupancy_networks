@@ -12,7 +12,8 @@ from im2mesh.common import (
 from im2mesh.data.preprocessing.constant import IMAGE_SIZE
 from im2mesh.utils import visualize as vis
 from im2mesh.training import BaseTrainer
-from PIL import Image
+from PIL import Image, ImageOps
+
 import os
 
 
@@ -94,7 +95,9 @@ class Trainer(BaseTrainer):
         bild_matrix = p_r.probs
         bild_matrix = bild_matrix.reshape((IMAGE_SIZE,IMAGE_SIZE))
         original_silhouette = original_silhouette.reshape((IMAGE_SIZE, IMAGE_SIZE))
-        bild_silhouette = tensor_to_image(original_silhouette.cpu())
+        bild_silhouette_sideways = tensor_to_image(original_silhouette.cpu())
+        bild_silhouette = bild_silhouette_sideways.transpose(Image.ROTATE_270)
+        bild_silhouette = ImageOps.mirror(bild_silhouette)
         bild = tensor_to_image(bild_matrix.cpu())
         image_path=f"/home/johannesselbert/Documents/GitHub/occupancy_networks/out/silhouette"
         bild.save(f"{image_path}/silhouette{y}.png")
