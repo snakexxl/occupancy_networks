@@ -171,7 +171,8 @@ def get_dataset(mode, cfg, return_idx=False, return_category=False):
     elif dataset_type == 'silhouette':
         print('silhouette')
         dataset = DatasetSilhouetteKeypoints(
-            validation = mode == 'val' or mode == 'test'
+            validation = mode == 'val',
+            test = mode == 'test'
         )
     else:
         raise ValueError('Invalid dataset "%s"' % cfg['data']['dataset'])

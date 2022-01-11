@@ -101,7 +101,7 @@ for it, data in enumerate(tqdm(test_loader)):
         trainer.predict_for_one_image(data,d)
         d += 1
     y += 1
-    if y > 100:
+    if y > 0:
         print("100 wurde überschritten")
         y = 0
     eval_data = trainer.eval_step(data)

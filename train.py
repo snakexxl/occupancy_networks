@@ -54,7 +54,7 @@ if not os.path.exists(out_dir):
 if DIMENSION == 2:
     cfg['data']['dataset']='silhouette' #<-- wenn aktiv muss in constant.py die variable auf 2 sein sonst 3 und noch bei default.yaml+ 61 62 deaktivieren
 train_dataset = config.get_dataset('train', cfg)
-a = train_dataset[0]
+a =  [0]
 val_dataset = config.get_dataset('val', cfg)
 
 train_loader = torch.utils.data.DataLoader(
@@ -80,8 +80,8 @@ data_vis = next(iter(vis_loader))
 model = config.get_model(cfg, device=device, dataset=train_dataset)
 
 # Intialize training
-npoints = 3000
-optimizer = optim.Adam(model.parameters(), lr=1e-6)
+npoints = 9000
+optimizer = optim.Adam(model.parameters(), lr=1e-5)
 #optimizer = optim.SGD(model.parameters(), lr=5e-7, momentum=0.9)
 trainer = config.get_trainer(model, optimizer, cfg, device=device)
 

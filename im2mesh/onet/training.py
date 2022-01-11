@@ -10,6 +10,7 @@ from im2mesh.common import (
     compute_iou, make_3d_grid
 )
 from im2mesh.data.preprocessing.constant import IMAGE_SIZE
+from im2mesh.data.preprocessing.plot_keypoints_on_image import plot_keypoints_on_image
 from im2mesh.utils import visualize as vis
 from im2mesh.training import BaseTrainer
 from PIL import Image, ImageOps
@@ -91,7 +92,7 @@ class Trainer(BaseTrainer):
         with torch.no_grad():
             p_r = self.model.compute_elbo_bild(
                 p, inputs, **kwargs)
-
+        #original Bild und reconstruction bild speichern
         bild_matrix = p_r.probs
         bild_matrix = bild_matrix.reshape((IMAGE_SIZE,IMAGE_SIZE))
         original_silhouette = original_silhouette.reshape((IMAGE_SIZE, IMAGE_SIZE))
@@ -102,7 +103,15 @@ class Trainer(BaseTrainer):
         image_path=f"/home/johannesselbert/Documents/GitHub/occupancy_networks/out/silhouette"
         bild.save(f"{image_path}/silhouette{y}.png")
         bild_silhouette.save(f"{image_path}/originalsilhouette{y}.png")
+        #keypoints aufs Bild bringen und speichern
+        image_path = f"/home/johannesselbert/Documents/GitHub/occupancy_networks/out/silhouette/originalsilhouette{y}.png"
 
+
+        poseXY = inputs.reshape(32, 2)
+        poseY = poseXY[:, 1]
+        poseX = poseXY[:, 0]
+        plot_keypoints_on_image(image_path, poseX, poseY)
+        print(data.get('idx', torch.empty(p.size(0), 0)).to(device))
     def eval_step(self, data):
         ''' Performs an evaluation step.
 

@@ -16,10 +16,19 @@ def generateRandomPoints(number_of_points, silhouette_gt):
     return random_points_in_image
 
 
-def importKeypointsFromCdf(directory='/home/johannesselbert/Documents/GitHub/inputs/cdffile'):
+def importKeypointsFromCdf(training):
+    if training:
+        directory = '/home/johannesselbert/Documents/GitHub/inputs/cdffile/train'
+    else:
+        directory = '/home/johannesselbert/Documents/GitHub/inputs/cdffile/test'
     list_of_key_points = []
     for filename in sorted(os.listdir(directory)):
-        print(filename)
+        if training:
+            print("traininggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg cdf:")
+            print(filename)
+        else:
+            print("testsssssssssssssssssssssssssssssssssssssssssss cdf:")
+            print(filename)
         filepath = os.path.join(directory, filename)
         if filepath.endswith(".cdf"):
             keypoints = read_cdf(filepath) # shape ( number_frames x number_keypoints)
@@ -33,7 +42,7 @@ def importKeypointsFromCdf(directory='/home/johannesselbert/Documents/GitHub/inp
 
     return list_of_key_points_concatenated # shape ((number_frames*numbervideos) x number_keypoints)
 
-def silhouette_gt_from_image(frame_index:int):
+def silhouette_gt_from_image(frame_index:int,training:bool):
     """
 
     Args:
@@ -42,7 +51,11 @@ def silhouette_gt_from_image(frame_index:int):
     Returns:
 
     """
-    image_path = f"/home/johannesselbert/Documents/GitHub/inputs/groundtruthvideoframe/Testgroup1/{frame_index}.png"
+    if training:
+        image_path = f"/home/johannesselbert/Documents/GitHub/inputs/groundtruthvideoframe/train/{frame_index}.png"
+    else:
+        image_path = f"/home/johannesselbert/Documents/GitHub/inputs/groundtruthvideoframe/test/{frame_index}.png"
+
     img = Image.open(image_path)
     silhouette_gt = np.array(img)
     rgb_weights = [0.2989, 0.5870, 0.1140]
@@ -57,29 +70,46 @@ def silhouette_gt_from_image(frame_index:int):
 
 
 class DatasetSilhouetteKeypoints:
-    def __init__(self,validation:bool):
+    def __init__(self, validation: bool, test: bool):
         self.validation = validation
-        self.keypoints = importKeypointsFromCdf()
-        print(validation)
+        self.test = test
+        if self.test:
+            self.keypoints_test = importKeypointsFromCdf(False)
+        else:
+            self.keypoints_validation = importKeypointsFromCdf(True)
 
     #todo #load keypoints from cdf files
     # load groundtruth Silhouette from images
     # is_in_silhoutte needs to be defined depended on the ground truth
 
     def __getitem__(self, index)->Dict[str, np.ndarray]:
-        silhouette_gt = silhouette_gt_from_image(index)
+        if self.test:
+            training =False
+            silhouette_gt = silhouette_gt_from_image(index,training)
+        else:
+            training = True
+            silhouette_gt = silhouette_gt_from_image(index,training)
         random_points = generateRandomPoints(2048,silhouette_gt)
         random_points_iou = generateRandomPoints(16000,silhouette_gt)
         is_in_silhoutte = silhouette_to_prediction_function(silhouette_gt)
         points_occ = np.stack([is_in_silhoutte(point)for point in random_points])
         points_iou_occ = np.stack([is_in_silhoutte(point)for point in random_points_iou])
-        item= {
-            'points': random_points,  #shape 999,2 im gesamten raum random generierte punkte
-            'points.occ': points_occ,  # datatyp:bool,shape:999, ob der generierte Punkt innerhalb der Silhoutte ist für jeden der 2048 generierten Punkte
-            'inputs': self.keypoints[index], #keypoints of the person
-            #'inputs.normals': dontknow[dk]
-        }
-        if self.validation:
+        if self.test:
+            item= {
+                'points': random_points,  #shape 999,2 im gesamten raum random generierte punkte
+                'points.occ': points_occ,  # datatyp:bool,shape:999, ob der generierte Punkt innerhalb der Silhoutte ist für jeden der 2048 generierten Punkte
+                'inputs': self.keypoints_test[index], #keypoints of the person
+                #'inputs.normals': dontknow[dk]
+            }
+        else:
+            item = {
+                'points': random_points,  # shape 999,2 im gesamten raum random generierte punkte
+                'points.occ': points_occ,
+                # datatyp:bool,shape:999, ob der generierte Punkt innerhalb der Silhoutte ist für jeden der 2048 generierten Punkte
+                'inputs': self.keypoints_validation[index],  # keypoints of the person
+                # 'inputs.normals': dontknow[dk]
+            }
+        if self.validation or self.test:
             #print('enter validation')
             item['voxels'] = silhouette_gt
             item['points_iou'] = random_points_iou
@@ -92,12 +122,15 @@ class DatasetSilhouetteKeypoints:
         return item
 
     def __len__(self):
-        return len(self.keypoints)
+        if self.test:
+            return len(self.keypoints_test)
+        else:
+            return len(self.keypoints_validation)
 
 
-if __name__ == "__main__":
-    keypoints = importKeypointsFromCdf()
-    dataset = DatasetSilhouetteKeypoints(keypoints = keypoints)
-    print(dataset[0])
-    print(dataset[50])
-    print(dataset[1])
+#if __name__ == "__main__":
+    #keypoints = importKeypointsFromCdf()
+    #dataset = DatasetSilhouetteKeypoints(keypoints = keypoints)
+    #print(dataset[0])
+    #print(dataset[50])
+    #print(dataset[1])
