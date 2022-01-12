@@ -169,7 +169,7 @@ def get_dataset(mode, cfg, return_idx=False, return_category=False):
             return_idx=return_idx,
         )
     elif dataset_type == 'silhouette':
-        print('silhouette')
+        print(mode)
         dataset = DatasetSilhouetteKeypoints(
             validation = mode == 'val',
             test = mode == 'test'
