@@ -32,7 +32,7 @@ def plot_keypoints_on_image(image_path: str, poseX, poseY):
         l1, = plt.plot([x1, x2], [y1, y2], 'k-')
         l1.set_color('b')
 
-    ##lower body part
+    #lower body part
     connectpoints(imgx, imgy, 0, 1)
     connectpoints(imgx, imgy, 1, 2)
     connectpoints(imgx, imgy, 2, 3)
@@ -43,11 +43,11 @@ def plot_keypoints_on_image(image_path: str, poseX, poseY):
     connectpoints(imgx, imgy, 7, 8)
     connectpoints(imgx, imgy, 8, 9)
     connectpoints(imgx, imgy, 9, 10)
-    ##upper body part
+    #upper body part
     connectpoints(imgx, imgy, 0, 11)
     connectpoints(imgx, imgy, 11, 12)
     connectpoints(imgx, imgy, 12, 13)
-    ##arm
+    #arm
     connectpoints(imgx, imgy, 13, 17)
     connectpoints(imgx, imgy, 13, 25)
     connectpoints(imgx, imgy, 17, 18)
@@ -58,9 +58,16 @@ def plot_keypoints_on_image(image_path: str, poseX, poseY):
     connectpoints(imgx, imgy, 26, 27)
     connectpoints(imgx, imgy, 27, 30)
     connectpoints(imgx, imgy, 27, 29)
-    ##head
+    # ##head
     connectpoints(imgx, imgy, 13, 14)
     connectpoints(imgx, imgy, 14, 15)
+    #punkte die wegen veranschaulichung nicht angezeigt werden.
+    #16,20,23,28,31 sind bei den Händen und einer beim Hals
+    # connectpoints(imgx, imgy, 16, 20)
+    # connectpoints(imgx, imgy, 20, 23)
+    # connectpoints(imgx, imgy, 23, 24)
+    # connectpoints(imgx, imgy, 28, 31)
+    # connectpoints(imgx, imgy, 31, 16)
     plt.xlabel("X-Werte")
     plt.ylabel("Y-Werte")
     plt.show()

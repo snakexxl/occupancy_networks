@@ -24,10 +24,10 @@ def importKeypointsFromCdf(training):
     list_of_key_points = []
     for filename in sorted(os.listdir(directory)):
         if training:
-            print("traininggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg cdf:")
+            print("training cdf:")
             print(filename)
         else:
-            print("testsssssssssssssssssssssssssssssssssssssssssss cdf:")
+            print("test cdf:")
             print(filename)
         filepath = os.path.join(directory, filename)
         if filepath.endswith(".cdf"):
