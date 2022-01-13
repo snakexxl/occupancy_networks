@@ -76,7 +76,14 @@ class DatasetSilhouetteKeypoints:
         if self.test:
             self.keypoints_test = importKeypointsFromCdf(False)
         else:
-            self.keypoints_validation = importKeypointsFromCdf(True)
+            all_keypoints = importKeypointsFromCdf(True)
+            size_train = int(0.8 * len(all_keypoints))
+            if self.validation:
+                self.keypoints_validation = all_keypoints[size_train:]
+            else:
+                #der name keypointsvalidation ist nicht gut gewählt, weil es eigentlich keypoints von training sind. Es macht es aber leichter zwischen train und validation zu unterscheiden, ohne viel mehr code
+                self.keypoints_validation = all_keypoints[:size_train]
+
 
     #todo #load keypoints from cdf files
     # load groundtruth Silhouette from images
