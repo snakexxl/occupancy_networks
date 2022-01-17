@@ -77,7 +77,7 @@ class DatasetSilhouetteKeypoints:
             self.keypoints_test = importKeypointsFromCdf(False)
         else:
             all_keypoints = importKeypointsFromCdf(True)
-            size_train = int(0.8 * len(all_keypoints))
+            size_train = int(0.90 * len(all_keypoints))
             if self.validation:
                 self.keypoints_validation = all_keypoints[size_train:]
             else:

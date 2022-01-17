@@ -7,13 +7,14 @@ import argparse
 import time
 import matplotlib;
 
-from im2mesh.data.preprocessing.constant import DIMENSION
+from im2mesh.data.preprocessing.constant import DIMENSION, TENSORBOARDITERATIONS
 
 matplotlib.use('Agg')
 from im2mesh import config, data
 from im2mesh.checkpoints import CheckpointIO
 
 # Arguments
+writer = SummaryWriter()
 parser = argparse.ArgumentParser(
     description='Train a 3D reconstruction model.'
 )
@@ -58,13 +59,13 @@ a =  [0]
 val_dataset = config.get_dataset('val', cfg)
 
 train_loader = torch.utils.data.DataLoader(
-    train_dataset, batch_size=batch_size, num_workers=6, shuffle=True,
+    train_dataset, batch_size=batch_size, num_workers=8, shuffle=True,
     collate_fn=data.collate_remove_none,
     worker_init_fn=data.worker_init_fn)
 b = next(iter(train_loader))
 
 val_loader = torch.utils.data.DataLoader(
-    val_dataset, batch_size=10, num_workers=6, shuffle=False,
+    val_dataset, batch_size=64, num_workers=8, shuffle=False,
     collate_fn=data.collate_remove_none,
     worker_init_fn=data.worker_init_fn)
 c = next(iter(val_loader))
@@ -81,8 +82,9 @@ model = config.get_model(cfg, device=device, dataset=train_dataset)
 
 # Intialize training
 npoints = 9000
-optimizer = optim.Adam(model.parameters(), lr=1e-5)
-#optimizer = optim.SGD(model.parameters(), lr=5e-7, momentum=0.9)
+#optimizer = optim.Adam(model.parameters(), lr=1e-4)
+#optimizer = optim.SGD(model.parameters(), lr=1e-6, momentum=0.9)
+optimizer = optim.RMSprop(model.parameters(), lr=1e-6, momentum=0.9)
 trainer = config.get_trainer(model, optimizer, cfg, device=device)
 
 checkpoint_io = CheckpointIO(out_dir, model=model, optimizer=optimizer)
@@ -136,6 +138,8 @@ while True:
         if print_every > 0 and (it % print_every) == 0:
             print('[Epoch %02d] it=%03d, loss=%.4f'
                   % (epoch_it, it, loss))
+            if it <= TENSORBOARDITERATIONS:
+                writer.add_scalar("Loss/train", loss, it)
 
         # Visualize output
         if False and visualize_every > 0 and (it % visualize_every) == 0:
@@ -162,6 +166,8 @@ while True:
 
             for k, v in eval_dict.items():
                 logger.add_scalar('val/%s' % k, v, it)
+                if it <= TENSORBOARDITERATIONS:
+                    writer.add_scalar('val/%s' % k, v, it)
 
             if model_selection_sign * (metric_val - metric_val_best) > 0:
                 metric_val_best = metric_val
@@ -175,3 +181,4 @@ while True:
             checkpoint_io.save(f'model__{DIMENSION}.pt', epoch_it=epoch_it, it=it,
                                loss_val_best=metric_val_best)
             exit(3)
+writer.flush()

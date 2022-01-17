@@ -15,7 +15,7 @@ model:
   z_dim: 0
 training:
   out_dir:  out/pointcloud/onet
-  batch_size: 4
+  batch_size: 6
   model_selection_metric: iou
   model_selection_mode: maximize
 test:
