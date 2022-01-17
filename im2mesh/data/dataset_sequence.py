@@ -70,15 +70,15 @@ def silhouette_gt_from_image(frame_index:int,training:bool):
 
 
 class DatasetSilhouetteKeypoints:
-    def __init__(self, validation: bool, test: bool):
-        self.validation = validation
-        self.test = test
-        if self.test:
+    #def __init__(self, validation: bool, test: bool):
+    def __init__(self, mode):
+        self.mode = mode
+        if self.mode == 'test':
             self.keypoints_test = importKeypointsFromCdf(False)
         else:
             all_keypoints = importKeypointsFromCdf(True)
             size_train = int(0.90 * len(all_keypoints))
-            if self.validation:
+            if self.mode == 'val':
                 self.keypoints_validation = all_keypoints[size_train:]
             else:
                 #der name keypointsvalidation ist nicht gut gewählt, weil es eigentlich keypoints von training sind. Es macht es aber leichter zwischen train und validation zu unterscheiden, ohne viel mehr code
@@ -90,7 +90,7 @@ class DatasetSilhouetteKeypoints:
     # is_in_silhoutte needs to be defined depended on the ground truth
 
     def __getitem__(self, index)->Dict[str, np.ndarray]:
-        if self.test:
+        if self.mode == 'test':
             training =False
             silhouette_gt = silhouette_gt_from_image(index,training)
         else:
@@ -101,7 +101,7 @@ class DatasetSilhouetteKeypoints:
         is_in_silhoutte = silhouette_to_prediction_function(silhouette_gt)
         points_occ = np.stack([is_in_silhoutte(point)for point in random_points])
         points_iou_occ = np.stack([is_in_silhoutte(point)for point in random_points_iou])
-        if self.test:
+        if self.mode == 'test':
             item= {
                 'points': random_points,  #shape 999,2 im gesamten raum random generierte punkte
                 'points.occ': points_occ,  # datatyp:bool,shape:999, ob der generierte Punkt innerhalb der Silhoutte ist für jeden der 2048 generierten Punkte
@@ -116,7 +116,7 @@ class DatasetSilhouetteKeypoints:
                 'inputs': self.keypoints_validation[index],  # keypoints of the person
                 # 'inputs.normals': dontknow[dk]
             }
-        if self.validation or self.test:
+        if self.mode == 'val'or self.mode == 'test':
             #print('enter validation')
             item['voxels'] = silhouette_gt
             item['points_iou'] = random_points_iou
@@ -129,7 +129,7 @@ class DatasetSilhouetteKeypoints:
         return item
 
     def __len__(self):
-        if self.test:
+        if self.mode == 'test':
             return len(self.keypoints_test)
         else:
             return len(self.keypoints_validation)
