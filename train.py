@@ -59,20 +59,20 @@ a =  [0]
 val_dataset = config.get_dataset('val', cfg)
 
 train_loader = torch.utils.data.DataLoader(
-    train_dataset, batch_size=batch_size, num_workers=8, shuffle=True,
+    train_dataset, batch_size=batch_size, num_workers=6, shuffle=True,
     collate_fn=data.collate_remove_none,
     worker_init_fn=data.worker_init_fn)
 b = next(iter(train_loader))
 
 val_loader = torch.utils.data.DataLoader(
-    val_dataset, batch_size=64, num_workers=8, shuffle=False,
+    val_dataset, batch_size=4, num_workers=6, shuffle=True,
     collate_fn=data.collate_remove_none,
     worker_init_fn=data.worker_init_fn)
 c = next(iter(val_loader))
 
 # For visualizations
 vis_loader = torch.utils.data.DataLoader(
-    val_dataset, batch_size=10, shuffle=True,
+    val_dataset, batch_size=4, shuffle=True,
     collate_fn=data.collate_remove_none,
     worker_init_fn=data.worker_init_fn)
 data_vis = next(iter(vis_loader))
@@ -84,7 +84,7 @@ model = config.get_model(cfg, device=device, dataset=train_dataset)
 npoints = 9000
 #optimizer = optim.Adam(model.parameters(), lr=1e-4)
 #optimizer = optim.SGD(model.parameters(), lr=1e-6, momentum=0.9)
-optimizer = optim.RMSprop(model.parameters(), lr=1e-6, momentum=0.9)
+optimizer = optim.RMSprop(model.parameters(), lr=1e-6, momentum=0.7)
 trainer = config.get_trainer(model, optimizer, cfg, device=device)
 
 checkpoint_io = CheckpointIO(out_dir, model=model, optimizer=optimizer)

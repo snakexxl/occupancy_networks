@@ -40,11 +40,11 @@ model:
   dmc_weight_prior: 10.
 training:
   out_dir: out/default
-  batch_size: 8
-  print_every: 1
+  batch_size: 4
+  print_every: 10
   visualize_every: 10000
   checkpoint_every: 10000
-  validate_every: 500
+  validate_every: 300
   backup_every: 100000
   eval_sample: false
   model_selection_metric: loss
