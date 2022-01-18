@@ -3,7 +3,7 @@ from glob import glob
 import cv2
 
 
-def dump_png_from_videos(glob_expression: str, save_dir: str, idx: int, training:bool):
+def dump_png_from_videos(glob_expression: str, save_dir: str, idx: int, training:str):
     training = training
     video_paths = glob(glob_expression)
     idx_frame = 0
@@ -16,10 +16,16 @@ def dump_png_from_videos(glob_expression: str, save_dir: str, idx: int, training
 def save_frame(video_path, save_dir, idx, training,gap=1):
     #uncomment to create a file which is named from the subjekt from human3.6
     #name = video_path.split("/")[-1].split(".")[0]
-    if training:
+    if training == 'train':
         name = 'train'
     else:
-        name = 'test'
+        if training == 'test':
+            name = 'test'
+        else:
+            if training == 'val':
+                name = 'val'
+            else:
+                print('weder test val oder train')
     save_path = os.path.join(save_dir, name)
     create_dir(save_path)
 
