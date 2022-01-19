@@ -139,7 +139,7 @@ while True:
             print('[Epoch %02d] it=%03d, loss=%.4f'
                   % (epoch_it, it, loss))
             if it <= TENSORBOARDITERATIONS:
-                writer.add_scalar("Loss/train", loss, it)
+                writer.add_scalar('training/%s' % "Loss", loss, it)
 
         # Visualize output
         if False and visualize_every > 0 and (it % visualize_every) == 0:

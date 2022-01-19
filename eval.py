@@ -109,8 +109,8 @@ for it, data in enumerate(tqdm(test_loader)):
         print("100 wurde überschritten")
         y = 0
     eval_data = trainer.eval_step(data)
-    writer.add_scalar("test_iou", eval_data['iou'], it)
-    writer.add_scalar("test_loss", eval_data['loss'], it)
+    writer.add_scalar('test/%s' % "iou", eval_data['iou'], it)
+    writer.add_scalar('test/%s' % "loss", eval_data['loss'], it)
     eval_dict.update(eval_data)
 
 
