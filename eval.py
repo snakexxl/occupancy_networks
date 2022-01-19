@@ -2,12 +2,15 @@ import argparse
 import os
 import pandas as pd
 import torch
+import torch.optim as optim
+from tensorboardX import SummaryWriter
 import numpy as np
 from tqdm import tqdm
 from im2mesh import config, data
 from im2mesh.checkpoints import CheckpointIO
 from im2mesh.data.preprocessing.constant import DIMENSION
 
+writer = SummaryWriter()
 parser = argparse.ArgumentParser(
     description='Evaluate mesh algorithms.'
 )
@@ -101,10 +104,13 @@ for it, data in enumerate(tqdm(test_loader)):
         trainer.predict_for_one_image(data,d)
         d += 1
     y += 1
-    if y > 100:
+    #if y > 100:
+    if y > 0:
         print("100 wurde überschritten")
         y = 0
     eval_data = trainer.eval_step(data)
+    writer.add_scalar("test_iou", eval_data['iou'], it)
+    writer.add_scalar("test_loss", eval_data['loss'], it)
     eval_dict.update(eval_data)
 
 

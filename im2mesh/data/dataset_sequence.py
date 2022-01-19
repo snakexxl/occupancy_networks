@@ -108,10 +108,10 @@ class DatasetSilhouetteKeypoints:
     # is_in_silhoutte needs to be defined depended on the ground truth
 
     def __getitem__(self, index) -> Dict[str, np.ndarray]:
-        print(self.mode + '<-- Dieser mode wird ausgeführt')
+        #print(self.mode + '<-- Dieser mode wird ausgeführt')
         #print(index)
         silhouette_gt = silhouette_gt_from_image(index, self.mode)
-        random_points = generateRandomPoints(8192, silhouette_gt)
+        random_points = generateRandomPoints(2048, silhouette_gt)
         random_points_iou = generateRandomPoints(16000, silhouette_gt)
         is_in_silhoutte = silhouette_to_prediction_function(silhouette_gt)
         points_occ = np.stack([is_in_silhoutte(point) for point in random_points])
