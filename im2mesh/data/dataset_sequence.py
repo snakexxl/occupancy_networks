@@ -5,6 +5,7 @@ from PIL import Image
 
 from im2mesh.data.cdf_reading import read_cdf
 from im2mesh.data.intersection_over_union import silhouette_to_prediction_function
+from im2mesh.data.preprocessing.constant import NUMBER_OF_FRAMES
 
 
 def generateRandomPoints(number_of_points, silhouette_gt):
@@ -82,6 +83,7 @@ class DatasetSilhouetteKeypoints:
     # def __init__(self, validation: bool, test: bool):
     def __init__(self, mode):
         self.mode = mode
+        self.frameDivider = 1
         if self.mode == 'test':
             print('test set wird gemacht')
         else:
@@ -89,11 +91,14 @@ class DatasetSilhouetteKeypoints:
                 print('validation set wird gemacht')
             else:
                 if self.mode == 'train':
+                    self.frameDivider = NUMBER_OF_FRAMES
                     print('train set wird gemacht')
                 else:
                     print('Error: unknown set!!! Wrong mode ')
 
+
         self.keypoints = importKeypointsFromCdf(mode)
+        self.keypoints = self.keypoints[::self.frameDivider]
         # else:
         #     all_keypoints = importKeypointsFromCdf(mode)
         #     size_train = int(0.90 * len(all_keypoints))
@@ -110,7 +115,7 @@ class DatasetSilhouetteKeypoints:
     def __getitem__(self, index) -> Dict[str, np.ndarray]:
         #print(self.mode + '<-- Dieser mode wird ausgeführt')
         #print(index)
-        silhouette_gt = silhouette_gt_from_image(index, self.mode)
+        silhouette_gt = silhouette_gt_from_image(index * self.frameDivider, self.mode)
         random_points = generateRandomPoints(2048, silhouette_gt)
         random_points_iou = generateRandomPoints(16000, silhouette_gt)
         is_in_silhoutte = silhouette_to_prediction_function(silhouette_gt)
