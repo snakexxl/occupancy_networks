@@ -5,7 +5,7 @@ from PIL import Image
 
 from im2mesh.data.cdf_reading import read_cdf
 from im2mesh.data.intersection_over_union import silhouette_to_prediction_function
-from im2mesh.data.preprocessing.constant import NUMBER_OF_FRAMES
+from im2mesh.data.preprocessing.constant import NUMBER_OF_FRAMES, NUMBER_OF_FRAMES_TEST, NUMBER_OF_FRAMES_VAL
 
 
 def generateRandomPoints(number_of_points, silhouette_gt):
@@ -86,9 +86,11 @@ class DatasetSilhouetteKeypoints:
         self.frameDivider = 1
         if self.mode == 'test':
             print('test set wird gemacht')
+            self.frameDivider = NUMBER_OF_FRAMES_TEST
         else:
             if self.mode == 'val':
                 print('validation set wird gemacht')
+                self.frameDivider = NUMBER_OF_FRAMES_VAL
             else:
                 if self.mode == 'train':
                     self.frameDivider = NUMBER_OF_FRAMES

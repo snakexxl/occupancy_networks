@@ -16,7 +16,7 @@ for filename in sorted(os.listdir(glob_expression_videos_training)):
         print(filepath + "fertig")
     else:  # print(filename)
         continue
-    print("fertig training")
+print("fertig training")
 
 idx = 0
 training = 'val'
@@ -30,7 +30,7 @@ for filename in sorted(os.listdir(glob_expression_videos_testing)):
         print(filepath + "fertig")
     else:  # print(filename)
         continue
-    print("fertig val")
+print("fertig val")
 
 idx = 0
 training = 'test'
@@ -44,7 +44,7 @@ for filename in sorted(os.listdir(glob_expression_videos_testing)):
         print(filepath + "fertig")
     else:  # print(filename)
         continue
-    print("fertig test")
+print("fertig test")
 
 
 

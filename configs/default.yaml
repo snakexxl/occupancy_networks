@@ -40,7 +40,7 @@ model:
   dmc_weight_prior: 10.
 training:
   out_dir: out/default
-  batch_size: 16
+  batch_size: 32
   print_every: 10
   visualize_every: 10000
   checkpoint_every: 10000

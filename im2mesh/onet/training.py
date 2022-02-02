@@ -95,6 +95,10 @@ class Trainer(BaseTrainer):
         #original Bild und reconstruction bild speichern
         bild_matrix = p_r.probs
         bild_matrix = bild_matrix.reshape((IMAGE_SIZE,IMAGE_SIZE))
+        
+        mean_occ = float(torch.mean(bild_matrix).cpu().numpy())
+        print(f"mean occ: {mean_occ}")
+
         original_silhouette = original_silhouette.reshape((IMAGE_SIZE, IMAGE_SIZE))
         bild_silhouette_sideways = tensor_to_image(original_silhouette.cpu())
         bild_silhouette = bild_silhouette_sideways.transpose(Image.ROTATE_270)
@@ -143,6 +147,7 @@ class Trainer(BaseTrainer):
         eval_dict['loss'] = -elbo.mean().item()
         eval_dict['rec_error'] = rec_error.mean().item()
         eval_dict['kl'] = kl.mean().item()
+
 
         # Compute iou
         batch_size = points.size(0)

@@ -82,7 +82,7 @@ model = config.get_model(cfg, device=device, dataset=train_dataset)
 
 # Intialize training
 npoints = 9000
-optimizer = optim.Adam(model.parameters(), lr=8e-6)
+optimizer = optim.Adam(model.parameters(), lr=1e-5)
 #optimizer = optim.SGD(model.parameters(), lr=1e-6, momentum=0.9)
 #optimizer = optim.RMSprop(model.parameters(), lr=5e-5, momentum=0.7)
 trainer = config.get_trainer(model, optimizer, cfg, device=device)
@@ -140,6 +140,9 @@ while True:
                   % (epoch_it, it, loss))
             if it <= TENSORBOARDITERATIONS:
                 writer.add_scalar('training/%s' % "Loss", loss, it)
+            #starttime = time.time()
+            #endtime = time.time()
+            #duration = endtime - starttime
 
         # Visualize output
         if False and visualize_every > 0 and (it % visualize_every) == 0:

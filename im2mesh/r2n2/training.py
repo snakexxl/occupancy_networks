@@ -81,6 +81,8 @@ class Trainer(BaseTrainer):
         occ_hat_np = (occ_hat >= threshold).cpu().numpy()
         iou_voxels = compute_iou(occ_np, occ_hat_np).mean()
         eval_dict['iou_voxels'] = iou_voxels
+        eval_dict['mean_occ']= float(torch.mean(occ_hat).cpu().numpy())
+        print(f"mean occ: {eval_dict['mean_occ']}")
 
         # Compute continuous IOU (if possible)
         if points is not None:
